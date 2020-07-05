@@ -113,5 +113,12 @@ jar {
 
 shadowJar {
     configurations = [project.configurations.shade]
-    relocate 'clojure', "${group}.shade.clojure"
+    relocate 'clojure', "${project.group}.shade.clojure"
 }
+
+reobf {
+    shadowJar {}
+}
+
+build.dependsOn shadowJar
+build.dependsOn reobfShadowJar
