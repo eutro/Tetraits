@@ -1,4 +1,4 @@
-package tetraits_api;
+package TetraitsAPI;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;

@@ -1,4 +1,4 @@
-package tetraits_api;
+package TetraitsAPI;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

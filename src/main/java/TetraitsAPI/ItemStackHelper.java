@@ -1,4 +1,4 @@
-package tetraits_api;
+package TetraitsAPI;
 
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;

@@ -26,6 +26,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 configurations {
     shade
+    implementation.extendsFrom(shade)
 }
 
 minecraft {
@@ -45,6 +46,9 @@ minecraft {
                 tetraits {
                     source sourceSets.main
                 }
+                clojure {
+                    source sourceSets.main
+                }
             }
         }
 
@@ -59,6 +63,9 @@ minecraft {
 
             mods {
                 tetraits {
+                    source sourceSets.main
+                }
+                clojure {
                     source sourceSets.main
                 }
             }
@@ -77,6 +84,9 @@ minecraft {
 
             mods {
                 tetraits {
+                    source sourceSets.main
+                }
+                clojure {
                     source sourceSets.main
                 }
             }
@@ -100,7 +110,7 @@ dependencies {
 
     def clojure = 'org.clojure:clojure:1.10.1'
     shade clojure
-    implementation clojure
+    runtimeOnly clojure
 }
 
 jar {
