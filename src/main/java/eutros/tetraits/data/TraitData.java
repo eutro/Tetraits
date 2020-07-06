@@ -3,13 +3,12 @@ package eutros.tetraits.data;
 import com.google.common.collect.Sets;
 import eutros.tetraits.Tetraits;
 import eutros.tetraits.handler.ActionHandler;
-import eutros.tetraits.network.PacketHandler;
 import eutros.tetraits.network.IntersectTraitsPacket;
+import eutros.tetraits.network.PacketHandler;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkDirection;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedReader;
@@ -25,9 +24,7 @@ public class TraitData {
     public final Map<ResourceLocation, String> traits = new HashMap<>();
 
     public void sync(ServerPlayerEntity player) {
-        PacketHandler.CHANNEL.sendTo(new IntersectTraitsPacket(traitMap.keySet()),
-                player.connection.netManager,
-                NetworkDirection.PLAY_TO_CLIENT);
+        PacketHandler.sendToPlayer(player, new IntersectTraitsPacket(traitMap.keySet()));
     }
 
     public void reset() {

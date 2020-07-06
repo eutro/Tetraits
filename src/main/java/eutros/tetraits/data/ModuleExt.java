@@ -4,6 +4,9 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.*;
 import eutros.tetraits.Tetraits;
+import eutros.tetraits.network.PacketHandler;
+import eutros.tetraits.network.UpdateModuleExtPacket;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IResource;
@@ -158,6 +161,10 @@ public class ModuleExt {
     public void setMap(Multimap<Pair<String, String>, ResourceLocation> map) {
         moduleEffectMap.clear();
         moduleEffectMap.putAll(map);
+    }
+
+    public void sync(ServerPlayerEntity player) {
+        PacketHandler.sendToPlayer(player, new UpdateModuleExtPacket(moduleEffectMap));
     }
 
     private enum ErrorType {

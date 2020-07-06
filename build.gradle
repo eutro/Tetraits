@@ -97,8 +97,8 @@ minecraft {
 repositories {
     mavenCentral()
     maven {
-        name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
+        name = 'Jared'
+        url = 'https://maven.blamejared.com'
     }
 }
 
@@ -111,6 +111,8 @@ dependencies {
     def clojure = 'org.clojure:clojure:1.10.1'
     shade clojure
     runtimeOnly clojure
+
+    runtimeOnly 'vazkii.botania:Botania:r1.15-388.458'
 }
 
 jar {
