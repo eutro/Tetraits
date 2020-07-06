@@ -131,12 +131,6 @@ public class ModuleExt {
                 continue;
             }
 
-            ModuleVariantData variantData = module.getVariantData(key.getAsString());
-            if(variantData == null) {
-                logError(rl, String.format("Variant: \"%s\". ", vObj), ErrorType.MISSING_REGISTRY, null, "variant", key.getAsString());
-                continue;
-            }
-
             JsonArray traits = vObj.getAsJsonArray("traits");
             if(traits == null) {
                 logError(rl, String.format("Variant: \"%s\". ", vObj), ErrorType.BAD_KEY, "Array of Strings", "traits");
@@ -152,8 +146,8 @@ public class ModuleExt {
                     .map(JsonElement::getAsString)
                     .map(ResourceLocation::new)
                     .forEach(trait -> {
-                        moduleEffectMap.put(getModulePair(module, variantData), trait);
-                        Tetraits.LOGGER.info(String.format("Added trait \"%s\" for variant \"%s\" of module \"%s\".", trait, variantData.getKey(), module.getKey()));
+                        moduleEffectMap.put(Pair.of(module.getKey(), key.getAsString()), trait);
+                        Tetraits.LOGGER.info(String.format("Added trait \"%s\" for variant \"%s\" of module \"%s\".", trait, key.getAsString(), module.getKey()));
                     });
         }
     }
