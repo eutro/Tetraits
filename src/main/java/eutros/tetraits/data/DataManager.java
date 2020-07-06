@@ -52,8 +52,8 @@ public class DataManager extends ReloadListener<Object> {
 
     @Override
     protected void apply(@Nonnull Object obj, @Nonnull IResourceManager rm, @Nonnull IProfiler profilerIn) {
-        traitData.load(rm);
         moduleExt.load(rm);
+        traitData.load(rm);
     }
 
 }

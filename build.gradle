@@ -100,6 +100,10 @@ repositories {
         name = 'Jared'
         url = 'https://maven.blamejared.com'
     }
+    maven {
+        name = "C4"
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 dependencies {
@@ -112,7 +116,9 @@ dependencies {
     shade clojure
     runtimeOnly clojure
 
-    runtimeOnly 'vazkii.botania:Botania:r1.15-388.458'
+    runtimeOnly fg.deobf('vazkii.botania:Botania:r1.15-388.458')
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_ver}-1.2-35.186")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-${mc_ver}-2.0")
 }
 
 jar {

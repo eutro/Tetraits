@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class ActionHandler {
 
@@ -23,33 +22,33 @@ public class ActionHandler {
 
     @Nullable
     public IFn getAction(ResourceLocation location) {
-        return actions.computeIfAbsent(location,
-                rl -> {
-                    String code = DataManager.getInstance().traitData.traits.get(rl);
-                    return Optional.ofNullable(code)
-                            .map(str -> {
-                                try {
-                                    return Compiler.load(new StringReader(str));
-                                } catch(Throwable t) {
-                                    Tetraits.LOGGER.error("Couldn't compile.", t);
-                                }
-                                return null;
-                            })
-                            .filter(res -> {
-                                if(res instanceof IFn) return true;
-                                Tetraits.LOGGER.error(String.format("\"%s\" does not evaluate to IFn", code));
-                                return false;
-                            })
-                            .map(IFn.class::cast)
-                            .orElseGet(() -> {
-                                DataManager.getInstance().traitData.traits.remove(rl);
-                                return null;
-                            });
-                });
+        return actions.get(location);
     }
 
-    public void clear() {
+    public void remove(ResourceLocation location) {
+        actions.remove(location);
+    }
+
+    private void makeAction(ResourceLocation loc, String code) {
+        Object load;
+        try {
+            load = Compiler.load(new StringReader(code), null, loc.toString());
+        } catch(Throwable t) {
+            Tetraits.LOGGER.error("Couldn't compile: {}", t.getMessage());
+            return;
+        }
+        if(!(load instanceof IFn)) {
+            Tetraits.LOGGER.error(String.format("\"%s\" does not evaluate to IFn", loc));
+            return;
+        }
+
+        Tetraits.LOGGER.info("Loaded function: {}.", loc.toString());
+        actions.put(loc, (IFn) load);
+    }
+
+    public void refresh() {
         actions.clear();
+        DataManager.getInstance().traitData.traits.forEach(this::makeAction);
     }
 
 }

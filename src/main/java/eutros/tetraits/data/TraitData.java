@@ -53,9 +53,9 @@ public class TraitData {
 
     public void intersect(Set<ResourceLocation> filter) {
         traits.clear();
-        ActionHandler.instance.clear();
         Sets.intersection(traitMap.keySet(), filter).parallelStream()
                 .forEach(rl -> traits.put(rl, traitMap.get(rl)));
+        ActionHandler.instance.refresh();
     }
 
 }
