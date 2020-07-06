@@ -1,12 +1,9 @@
 (fn [evt]
   (case evt
-    "INVENTORY_TICK" (fn [player stack]
+    "INVENTORY_TICK" (fn [stack world player slot isCurrent]
                        (if (and
-                            (-> (TetraitsAPI.EntityHelper/getEntityWorld player)
-                                (TetraitsAPI.WorldHelper/isRemote)
-                                (not))
-                            (-> (rand)
-                                (< 0.01)))
+                            (not (TetraitsAPI.WorldHelper/isRemote world))
+                            (< (rand) 0.01))
                          (->> (TetraitsAPI.ItemStackHelper/getDamage stack)
                               (dec)
                               (max 0)
