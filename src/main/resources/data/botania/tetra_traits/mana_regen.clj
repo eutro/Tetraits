@@ -10,8 +10,7 @@
                                            true)))
       (->> (TetraitsAPI.ItemStackHelper/getDamage stack)
            (dec)
-           (TetraitsAPI.ItemStackHelper/setDamage stack))
-      nil)))
+           (TetraitsAPI.ItemStackHelper/setDamage stack)))))
 
 (fn [evt]
   (case evt

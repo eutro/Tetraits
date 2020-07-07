@@ -15,12 +15,11 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.IntStream;
 
 public class TraitHandler {
 
@@ -61,15 +60,15 @@ public class TraitHandler {
         if(!(living instanceof PlayerEntity)) return;
 
         PlayerEntity player = (PlayerEntity) living;
-        IntStream.range(0, player.inventory.getSizeInventory())
-                .parallel()
-                .forEach(slot -> {
-                    ItemStack stack = player.inventory.getStackInSlot(slot);
-                    invokeTraits(
-                            Type.INVENTORY_TICK, stack,
-                            fn -> fn.invoke(stack, player.world, player, slot, player.inventory.currentItem == slot)
-                    );
-                });
+        int bound = player.inventory.getSizeInventory();
+        for(int i = 0; i < bound; i++) {
+            int slot = i;
+            ItemStack stack = player.inventory.getStackInSlot(slot);
+            invokeTraits(
+                    Type.INVENTORY_TICK, stack,
+                    fn -> fn.invoke(stack, player.world, player, slot, player.inventory.currentItem == slot)
+            );
+        }
     }
 
     /**
@@ -238,8 +237,7 @@ public class TraitHandler {
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onEntityAttack(AttackEntityEvent evt) {
         invokeSimple(Type.ENTITY_ATTACK,
-                evt.getEntityLiving(),
-                evt.getEntityLiving().getActiveItemStack(),
+                evt,
                 evt.getTarget());
     }
 
@@ -263,8 +261,13 @@ public class TraitHandler {
 
     private void invokeSimple(Type type, LivingEntity entity, ItemStack stack, Object... params) {
         invokeTraits(type, stack, fn -> {
-            ArraySeq seq = ArraySeq.create(stack, entity.world, entity);
-            seq.addAll(Arrays.asList(params));
+            ArraySeq seq = ArraySeq.create(
+                    ArrayUtils.addAll(new Object[] {
+                                    stack,
+                                    entity.world,
+                                    entity
+                            },
+                            params));
             fn.applyTo(seq);
         });
     }
@@ -272,16 +275,15 @@ public class TraitHandler {
     private void invokeTraits(Type type, ItemStack stack, Consumer<IFn> invoker) {
         if(stack.isEmpty()) return;
         List<ResourceLocation> traits = DataManager.getInstance().moduleExt.getTraits(stack);
-        traits.parallelStream()
-                .forEach(rl -> {
-                    IFn action = ActionHandler.instance.getAction(rl);
-                    if(action == null) return;
+        for(ResourceLocation rl : traits) {
+            IFn action = ActionHandler.instance.getAction(rl);
+            if(action == null) continue;
 
-                    invokeTrait(invoker, type, rl, action);
-                });
+            invokeTrait(invoker, type, rl, action);
+        }
     }
 
-    private synchronized void invokeTrait(Consumer<IFn> invoker, Type type, ResourceLocation rl, IFn action) {
+    private void invokeTrait(Consumer<IFn> invoker, Type type, ResourceLocation rl, IFn action) {
         try {
             Optional.ofNullable((IFn) action.invoke(type.name()))
                     .ifPresent(invoker);

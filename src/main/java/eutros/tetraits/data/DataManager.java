@@ -1,5 +1,6 @@
 package eutros.tetraits.data;
 
+import eutros.tetraits.network.CustomPacket;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.profiler.IProfiler;
@@ -47,6 +48,7 @@ public class DataManager extends ReloadListener<Object> {
     protected Object prepare(@Nonnull IResourceManager rm, @Nonnull IProfiler profilerIn) {
         traitData.reset();
         moduleExt.reset();
+        CustomPacket.clearSchemes();
         return this;
     }
 
