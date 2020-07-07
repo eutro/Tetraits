@@ -21,7 +21,7 @@ public class UpdateModuleExtPacket {
     }
 
     public void encode(PacketBuffer buf) {
-        buf.writeVarInt(data.size());
+        buf.writeVarInt(data.keySet().size());
         data.asMap().forEach((key, values) -> {
             buf.writeString(key.getLeft());
             buf.writeString(key.getRight());

@@ -12,20 +12,24 @@ import java.util.function.Supplier;
 
 public class CustomPacket {
 
-    private static Map<String, IPacketScheme> schemeMap = new HashMap<>();
+    private static final ThreadLocal<Map<String, IPacketScheme>> schemeMap = ThreadLocal.withInitial(HashMap::new);
     private final String schemeKey;
     private final IPacketScheme scheme;
     private final Object data;
 
+    private static Map<String, IPacketScheme> getSchemeMap() {
+        return schemeMap.get();
+    }
+
     public static void clearSchemes() {
-        schemeMap.clear();
+        getSchemeMap().clear();
     }
 
     public static void putScheme(String key, IPacketScheme scheme) {
-        if(schemeMap.containsKey(key)) {
+        if(getSchemeMap().containsKey(key)) {
             throw new IllegalStateException(String.format("Key: \"%s\" registered more than once.", key));
         }
-        schemeMap.put(key, scheme);
+        getSchemeMap().put(key, scheme);
     }
 
     public CustomPacket(String schemeKey, IPacketScheme scheme, Object data) {
@@ -35,7 +39,7 @@ public class CustomPacket {
     }
 
     public static Optional<CustomPacket> create(String scheme, Object data) {
-        Optional<CustomPacket> ret = Optional.ofNullable(schemeMap.get(scheme))
+        Optional<CustomPacket> ret = Optional.ofNullable(getSchemeMap().get(scheme))
                 .map(sc -> new CustomPacket(scheme, sc, data));
 
         if(!ret.isPresent()) {
@@ -55,7 +59,7 @@ public class CustomPacket {
 
     public static CustomPacket decode(PacketBuffer buf) {
         String schemeKey = buf.readString();
-        IPacketScheme scheme = schemeMap.get(schemeKey);
+        IPacketScheme scheme = getSchemeMap().get(schemeKey);
         Object data;
         if(scheme == null) {
             Tetraits.LOGGER.error("Received packet of unregistered scheme: \"{}\".", schemeKey);
@@ -84,7 +88,7 @@ public class CustomPacket {
 
     private static void removeScheme(String failure, String schemeKey, Throwable t) {
         Tetraits.LOGGER.fatal(String.format("Scheme: \"%s\" failed to %s data. Removing scheme.", schemeKey, failure), t);
-        schemeMap.remove(schemeKey);
+        getSchemeMap().remove(schemeKey);
     }
 
 }

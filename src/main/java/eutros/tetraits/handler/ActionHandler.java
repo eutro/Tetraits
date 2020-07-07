@@ -34,7 +34,7 @@ public class ActionHandler {
         try {
             load = Compiler.load(new StringReader(code), null, loc.toString());
         } catch(Throwable t) {
-            Tetraits.LOGGER.error("Couldn't compile: {}", t.getMessage());
+            Tetraits.LOGGER.error("Couldn't compile \"{}\": {}", loc, t.getMessage());
             return;
         }
         if(!(load instanceof IFn)) {
