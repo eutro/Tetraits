@@ -47,7 +47,7 @@ public class ModuleExt extends WatchableData {
         onPreLoad(moduleCapMap::clear);
     }
 
-    public List<ResourceLocation> getTraits(ItemStack stack) {
+    public Set<ResourceLocation> getTraits(ItemStack stack) {
         Item item = stack.getItem();
         if(item instanceof IItemModular) {
             IItemModular iim = (IItemModular) item;
@@ -60,12 +60,12 @@ public class ModuleExt extends WatchableData {
                     .map(im -> getModulePair(im, im.getVariantData(stack)))
                     .map(moduleEffectMap::get)
                     .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
         }
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
 
-    public List<ResourceLocation> getCaps(ItemStack stack) {
+    public Set<ResourceLocation> getCaps(ItemStack stack) {
         Item item = stack.getItem();
         if(item instanceof IItemModular) {
             IItemModular iim = (IItemModular) item;
@@ -78,9 +78,9 @@ public class ModuleExt extends WatchableData {
                     .map(im -> getModulePair(im, im.getVariantData(stack)))
                     .map(moduleCapMap::get)
                     .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
         }
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
 
     @Nonnull

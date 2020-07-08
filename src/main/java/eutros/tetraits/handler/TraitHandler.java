@@ -5,44 +5,50 @@ import clojure.lang.ArraySeq;
 import clojure.lang.IFn;
 import eutros.tetraits.Tetraits;
 import eutros.tetraits.data.DataManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.*;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class TraitHandler {
 
     private enum Type {
+        ARROW_LOOSE,
         ARROW_NOCK,
         ATTACK,
+        BREAK_BLOCK,
+        BREAK_SPEED,
         CRIT,
         DAMAGE,
+        ENTITY_ATTACK,
+        ENTITY_INTERACT,
+        ENTITY_INTERACT_SPECIFIC,
         EXPERIENCE_DROP,
+        GENERIC,
         HURT,
         INVENTORY_TICK,
         JUMP,
-        ARROW_LOOSE,
-        ENTITY_ATTACK,
-        BREAK_SPEED,
+        LEFT_CLICK_BLOCK,
         LEFT_CLICK_EMPTY,
-        RIGHT_CLICK_BLOCK,
         RIGHT_CLICK_AIR,
+        RIGHT_CLICK_BLOCK,
         RIGHT_CLICK_ITEM,
-        ENTITY_INTERACT_SPECIFIC,
-        ENTITY_INTERACT,
-        GENERIC,
-        LEFT_CLICK_BLOCK
+        TOOLTIP
     }
 
     private static TraitHandler instance = new TraitHandler();
@@ -61,13 +67,12 @@ public class TraitHandler {
 
         PlayerEntity player = (PlayerEntity) living;
         int bound = player.inventory.getSizeInventory();
-        for(int i = 0; i < bound; i++) {
-            int slot = i;
-            ItemStack stack = player.inventory.getStackInSlot(slot);
-            invokeTraits(
-                    Type.INVENTORY_TICK, stack,
-                    fn -> fn.invoke(stack, player.world, player, slot, player.inventory.currentItem == slot)
-            );
+        for(int slot = 0; slot < bound; slot++) {
+            invokeSimple(Type.INVENTORY_TICK,
+                    player,
+                    player.inventory.getStackInSlot(slot),
+                    slot,
+                    player.inventory.currentItem == slot);
         }
     }
 
@@ -96,8 +101,13 @@ public class TraitHandler {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onLivingAttack(LivingAttackEvent evt) {
+        Entity source = evt.getSource().getTrueSource();
+        if(!(source instanceof LivingEntity)) return;
+        LivingEntity living = (LivingEntity) source;
         invokeSimple(Type.ATTACK,
-                evt,
+                living,
+                living.getHeldItemMainhand(),
+                evt.getEntityLiving(),
                 evt.getSource(),
                 evt.getAmount());
     }
@@ -244,13 +254,32 @@ public class TraitHandler {
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onBreakSpeed(PlayerEvent.BreakSpeed evt) {
         invokeSimple(Type.BREAK_SPEED,
-                evt.getEntityLiving(),
-                evt.getEntityLiving().getActiveItemStack(),
+                evt,
                 evt.getPos(),
                 evt.getState(),
                 evt.getNewSpeed(),
                 evt.getOriginalSpeed(),
                 SetFunc.of(evt::setNewSpeed));
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void onBreak(BlockEvent.BreakEvent evt) {
+        invokeSimple(Type.BREAK_BLOCK,
+                evt.getPlayer(),
+                evt.getPlayer().getHeldItemMainhand(),
+                evt.getPos(),
+                evt.getExpToDrop(),
+                SetFunc.of(evt::setExpToDrop));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onTooltip(ItemTooltipEvent evt) {
+        invokeSimple(Type.TOOLTIP,
+                evt.getPlayer(),
+                evt.getItemStack(),
+                evt.getFlags(),
+                evt.getToolTip());
     }
 
     private void invokeSimple(Type type, LivingEvent evt, Object... params) {
@@ -275,7 +304,7 @@ public class TraitHandler {
     private void invokeTraits(Type type, ItemStack stack, Consumer<IFn> invoker) {
         if(stack.isEmpty()) return;
         DataManager dm = DataManager.getInstance();
-        List<ResourceLocation> traits = dm.moduleExt.getTraits(stack);
+        Set<ResourceLocation> traits = dm.moduleExt.getTraits(stack);
         for(ResourceLocation rl : traits) {
             IFn action = dm.traitData.traitMap.get(rl);
             if(action == null) continue;
