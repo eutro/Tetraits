@@ -39,7 +39,7 @@ public abstract class ClojureData extends WatchableData {
                     Object loaded = Compiler.load(new InputStreamReader(resource.getInputStream()), null, rl.toString());
                     store(location, loaded);
                 } catch(Throwable t) {
-                    Tetraits.LOGGER.error("Couldn't compile \"{}\": {}", rl, t.getMessage());
+                    Tetraits.LOGGER.error("Couldn't compile \"{}\": {}\n{}", rl, t.getMessage(), t.getCause().getMessage());
                 }
             });
         }

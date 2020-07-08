@@ -39,9 +39,12 @@ public class ModuleExt extends WatchableData {
     public static final JsonParser PARSER = new JsonParser();
     //                moduleKey, variantKey
     private Multimap<Pair<String, String>, ResourceLocation> moduleEffectMap = HashMultimap.create();
+    //                moduleKey, variantKey
+    private Multimap<Pair<String, String>, ResourceLocation> moduleCapMap = HashMultimap.create();
 
     public ModuleExt() {
         onPreLoad(moduleEffectMap::clear);
+        onPreLoad(moduleCapMap::clear);
     }
 
     public List<ResourceLocation> getTraits(ItemStack stack) {
@@ -56,6 +59,24 @@ public class ModuleExt extends WatchableData {
                     .filter(Objects::nonNull)
                     .map(im -> getModulePair(im, im.getVariantData(stack)))
                     .map(moduleEffectMap::get)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    public List<ResourceLocation> getCaps(ItemStack stack) {
+        Item item = stack.getItem();
+        if(item instanceof IItemModular) {
+            IItemModular iim = (IItemModular) item;
+
+            return Stream.concat(
+                    Arrays.stream(iim.getMinorModules(stack)),
+                    Arrays.stream(iim.getMajorModules(stack))
+            )
+                    .filter(Objects::nonNull)
+                    .map(im -> getModulePair(im, im.getVariantData(stack)))
+                    .map(moduleCapMap::get)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
         }
@@ -141,23 +162,36 @@ public class ModuleExt extends WatchableData {
             }
 
             JsonArray traits = vObj.getAsJsonArray("traits");
-            if(traits == null) {
-                logError(rl, String.format("Variant: \"%s\". ", vObj), ErrorType.BAD_KEY, "Array of Strings", "traits");
-                continue;
+            if(traits != null) {
+                StreamSupport.stream(traits.spliterator(), true)
+                        .filter(e -> {
+                            if(e.isJsonPrimitive()) return true;
+                            Tetraits.LOGGER.error(String.format("Ignoring trait: %s, not a String.", e));
+                            return false;
+                        })
+                        .map(JsonElement::getAsString)
+                        .map(ResourceLocation::new)
+                        .forEach(trait -> {
+                            moduleEffectMap.put(getModulePair(module, variantData), trait);
+                            Tetraits.LOGGER.info(String.format("Added trait \"%s\" for variant \"%s\" of module \"%s\".", trait, keyString, module.getKey()));
+                        });
             }
 
-            StreamSupport.stream(traits.spliterator(), true)
-                    .filter(e -> {
-                        if(e.isJsonPrimitive()) return true;
-                        Tetraits.LOGGER.error(String.format("Ignoring trait: %s, not a String.", e));
-                        return false;
-                    })
-                    .map(JsonElement::getAsString)
-                    .map(ResourceLocation::new)
-                    .forEach(trait -> {
-                        moduleEffectMap.put(getModulePair(module, variantData), trait);
-                        Tetraits.LOGGER.info(String.format("Added trait \"%s\" for variant \"%s\" of module \"%s\".", trait, keyString, module.getKey()));
-                    });
+            JsonArray caps = vObj.getAsJsonArray("caps");
+            if(caps != null) {
+                StreamSupport.stream(caps.spliterator(), true)
+                        .filter(e -> {
+                            if(e.isJsonPrimitive()) return true;
+                            Tetraits.LOGGER.error(String.format("Ignoring cap: %s, not a String.", e));
+                            return false;
+                        })
+                        .map(JsonElement::getAsString)
+                        .map(ResourceLocation::new)
+                        .forEach(cap -> {
+                            moduleCapMap.put(getModulePair(module, variantData), cap);
+                            Tetraits.LOGGER.info(String.format("Added cap \"%s\" for variant \"%s\" of module \"%s\".", cap, keyString, module.getKey()));
+                        });
+            }
         }
     }
 

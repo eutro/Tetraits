@@ -44,6 +44,8 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public class ItemStackHelper {
 
+    public static final ItemStack EMPTY = ItemStack.EMPTY;
+
     public static ItemStack read(CompoundNBT compound) {
         return ItemStack.read(compound);
     }

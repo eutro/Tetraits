@@ -2,6 +2,7 @@ package eutros.tetraits;
 
 import eutros.tetraits.data.ClientDataManager;
 import eutros.tetraits.data.DataManager;
+import eutros.tetraits.handler.CapabilityHandler;
 import eutros.tetraits.handler.TraitHandler;
 import eutros.tetraits.network.PacketHandler;
 import net.minecraft.client.Minecraft;
@@ -23,6 +24,7 @@ public class Tetraits {
         DataManager.init();
         PacketHandler.init();
         TraitHandler.init();
+        CapabilityHandler.init();
         if(FMLEnvironment.dist.isClient()) {
             Minecraft mc = Minecraft.getInstance();
             mc.enqueue(() -> {

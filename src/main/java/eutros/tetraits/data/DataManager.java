@@ -17,9 +17,11 @@ import javax.annotation.Nullable;
 
 public class DataManager extends ReloadListener<Object> {
 
-    private static final ThreadLocal<DataManager> instance = ThreadLocal.withInitial(() -> new DataManager(new TraitData(), new ModuleExt()));
+    private static final ThreadLocal<DataManager> instance = ThreadLocal.withInitial(() ->
+            new DataManager(new TraitData(), new ModuleExt(), new CapData()));
 
     public TraitData traitData;
+    public CapData capData;
     public ModuleExt moduleExt;
 
     private final ImmutableList<WatchableData> data;
@@ -29,10 +31,11 @@ public class DataManager extends ReloadListener<Object> {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, DataManager::playerConnected);
     }
 
-    protected DataManager(TraitData traitData, ModuleExt moduleExt) {
+    protected DataManager(TraitData traitData, ModuleExt moduleExt, CapData capData) {
         this.traitData = traitData;
         this.moduleExt = moduleExt;
-        data = ImmutableList.of(traitData, moduleExt);
+        this.capData = capData;
+        data = ImmutableList.of(traitData, moduleExt, capData);
         data.forEach(d -> d.onPostLoad(d::syncAll));
     }
 

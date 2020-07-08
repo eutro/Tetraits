@@ -121,6 +121,9 @@ dependencies {
     runtimeOnly fg.deobf('vazkii.botania:Botania:r1.15-388.458')
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_ver}-1.2-35.186")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-${mc_ver}-2.0")
+
+    runtimeOnly fg.deobf('vazkii.psi:Psi:r1.2-82.237')
+    runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-41.80')
 }
 
 jar {
