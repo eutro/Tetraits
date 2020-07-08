@@ -1,10 +1,11 @@
 package eutros.tetraits.data;
 
-import eutros.tetraits.network.CustomPacket;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -19,6 +20,8 @@ public class DataManager extends ReloadListener<Object> {
     public TraitData traitData;
     public ModuleExt moduleExt;
 
+    private final ImmutableList<WatchableData> data;
+
     public static void init() {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, instance::serverStarting);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, instance::playerConnected);
@@ -27,6 +30,8 @@ public class DataManager extends ReloadListener<Object> {
     protected DataManager(TraitData traitData, ModuleExt moduleExt) {
         this.traitData = traitData;
         this.moduleExt = moduleExt;
+        data = ImmutableList.of(traitData, moduleExt);
+        data.forEach(d -> d.onPostLoad(d::syncAll));
     }
 
     public static DataManager getInstance() {
@@ -34,28 +39,26 @@ public class DataManager extends ReloadListener<Object> {
     }
 
     public void serverStarting(FMLServerAboutToStartEvent event) {
-        event.getServer().getResourceManager().addReloadListener(this);
+        MinecraftServer server = event.getServer();
+        server.getResourceManager().addReloadListener(this);
+        data.forEach(d -> d.server = server);
     }
 
     public void playerConnected(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        traitData.sync(player);
-        moduleExt.sync(player);
+        data.forEach(d -> d.sync(player));
     }
 
     @Nonnull
     @Override
     protected Object prepare(@Nonnull IResourceManager rm, @Nonnull IProfiler profilerIn) {
-        traitData.reset();
-        moduleExt.reset();
-        CustomPacket.clearSchemes();
+        data.forEach(d -> d.doPre(rm));
         return this;
     }
 
     @Override
     protected void apply(@Nonnull Object obj, @Nonnull IResourceManager rm, @Nonnull IProfiler profilerIn) {
-        moduleExt.load(rm);
-        traitData.load(rm);
+        data.forEach(d -> d.doApply(rm));
     }
 
 }

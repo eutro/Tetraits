@@ -1,6 +1,7 @@
 package eutros.tetraits;
 
 import eutros.tetraits.data.DataManager;
+import eutros.tetraits.handler.ActionHandler;
 import eutros.tetraits.handler.TraitHandler;
 import eutros.tetraits.network.PacketHandler;
 import net.minecraft.resources.IReloadableResourceManager;
@@ -19,6 +20,7 @@ public class Tetraits {
     public Tetraits() {
         DataManager.init();
         PacketHandler.init();
+        ActionHandler.init();
         TraitHandler.init();
         MinecraftForge.EVENT_BUS.addListener((FMLClientSetupEvent evt) -> ((IReloadableResourceManager) evt.getMinecraftSupplier().get()
                 .getResourceManager())

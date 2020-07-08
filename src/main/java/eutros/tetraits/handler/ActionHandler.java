@@ -18,6 +18,10 @@ public class ActionHandler {
 
     public static final ActionHandler instance = new ActionHandler();
 
+    public static void init() {
+        DataManager.getInstance().traitData.onPostLoad(instance::refresh);
+    }
+
     private Map<ResourceLocation, IFn> actions = new HashMap<>();
 
     @Nullable

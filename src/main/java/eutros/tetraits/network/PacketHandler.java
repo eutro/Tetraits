@@ -1,6 +1,7 @@
 package eutros.tetraits.network;
 
 import eutros.tetraits.Tetraits;
+import eutros.tetraits.data.DataManager;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -22,6 +23,8 @@ public class PacketHandler {
         CHANNEL.registerMessage(index++, IntersectTraitsPacket.class, IntersectTraitsPacket::encode, IntersectTraitsPacket::decode, IntersectTraitsPacket::handle);
         CHANNEL.registerMessage(index++, UpdateModuleExtPacket.class, UpdateModuleExtPacket::encode, UpdateModuleExtPacket::decode, UpdateModuleExtPacket::handle);
         CHANNEL.registerMessage(index, CustomPacket.class, CustomPacket::encode, CustomPacket::decode, CustomPacket::handle);
+
+        DataManager.getInstance().traitData.onPreLoad(CustomPacket::clearSchemes);
     }
 
     public static void sendToPlayer(ServerPlayerEntity player, Object packet) {

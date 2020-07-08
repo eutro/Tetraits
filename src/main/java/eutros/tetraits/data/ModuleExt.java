@@ -33,11 +33,15 @@ import java.util.stream.StreamSupport;
  * <p>
  * Waiting for API...
  */
-public class ModuleExt {
+public class ModuleExt extends WatchableData {
 
     public static final JsonParser PARSER = new JsonParser();
     //                moduleKey, variantKey
     private Multimap<Pair<String, String>, ResourceLocation> moduleEffectMap = HashMultimap.create();
+
+    public ModuleExt() {
+        onPreLoad(moduleEffectMap::clear);
+    }
 
     public List<ResourceLocation> getTraits(ItemStack stack) {
         Item item = stack.getItem();
@@ -62,11 +66,8 @@ public class ModuleExt {
         return Pair.of(module.getKey(), variant.getKey());
     }
 
-    public void reset() {
-        moduleEffectMap.clear();
-    }
-
-    public void load(IResourceManager rm) {
+    @Override
+    protected void apply(IResourceManager rm) {
         for(ResourceLocation rl : rm.getAllResourceLocations("module_ext", s -> FilenameUtils.getExtension(s).equals("json"))) {
             IResource resource;
             try {

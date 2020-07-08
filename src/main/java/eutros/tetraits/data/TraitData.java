@@ -2,7 +2,6 @@ package eutros.tetraits.data;
 
 import com.google.common.collect.Sets;
 import eutros.tetraits.Tetraits;
-import eutros.tetraits.handler.ActionHandler;
 import eutros.tetraits.network.IntersectTraitsPacket;
 import eutros.tetraits.network.PacketHandler;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -18,20 +17,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class TraitData {
+public class TraitData extends WatchableData {
 
     private final Map<ResourceLocation, String> traitMap = new HashMap<>();
     public final Map<ResourceLocation, String> traits = new HashMap<>();
+
+    public TraitData() {
+        onPreLoad(traitMap::clear);
+    }
 
     public void sync(ServerPlayerEntity player) {
         PacketHandler.sendToPlayer(player, new IntersectTraitsPacket(traitMap.keySet()));
     }
 
-    public void reset() {
-        traitMap.clear();
-    }
-
-    public void load(IResourceManager rm) {
+    protected void pre(IResourceManager rm) {
         String path = "tetra_traits";
         for(ResourceLocation rl : rm.getAllResourceLocations(path, s -> FilenameUtils.getExtension(s).equals("clj"))) {
             IResource resource;
@@ -55,7 +54,6 @@ public class TraitData {
         traits.clear();
         Sets.intersection(traitMap.keySet(), filter).parallelStream()
                 .forEach(rl -> traits.put(rl, traitMap.get(rl)));
-        ActionHandler.instance.refresh();
     }
 
 }
