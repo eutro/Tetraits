@@ -274,9 +274,10 @@ public class TraitHandler {
 
     private void invokeTraits(Type type, ItemStack stack, Consumer<IFn> invoker) {
         if(stack.isEmpty()) return;
-        List<ResourceLocation> traits = DataManager.getInstance().moduleExt.getTraits(stack);
+        DataManager dm = DataManager.getInstance();
+        List<ResourceLocation> traits = dm.moduleExt.getTraits(stack);
         for(ResourceLocation rl : traits) {
-            IFn action = ActionHandler.instance.getAction(rl);
+            IFn action = dm.traitData.traitMap.get(rl);
             if(action == null) continue;
 
             invokeTrait(invoker, type, rl, action);
@@ -289,7 +290,7 @@ public class TraitHandler {
                     .ifPresent(invoker);
         } catch(ClassCastException e) {
             Tetraits.LOGGER.error("Bad function: {}, didn't return a function itself.", rl.toString());
-            ActionHandler.instance.remove(rl);
+            DataManager.getInstance().traitData.traitMap.remove(rl);
         } catch(Throwable t) {
             Tetraits.LOGGER.debug("Error: {}", t.getMessage());
         }

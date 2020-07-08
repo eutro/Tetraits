@@ -33,6 +33,7 @@ import java.util.stream.StreamSupport;
  * <p>
  * Waiting for API...
  */
+@Deprecated
 public class ModuleExt extends WatchableData {
 
     public static final JsonParser PARSER = new JsonParser();

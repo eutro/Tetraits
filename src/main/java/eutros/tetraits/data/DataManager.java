@@ -1,6 +1,7 @@
 package eutros.tetraits.data;
 
 import com.google.common.collect.ImmutableList;
+import eutros.tetraits.network.CustomPacket;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.profiler.IProfiler;
@@ -12,10 +13,11 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class DataManager extends ReloadListener<Object> {
 
-    private static final DataManager instance = new DataManager(new TraitData(), new ModuleExt());
+    private static final ThreadLocal<DataManager> instance = ThreadLocal.withInitial(() -> new DataManager(new TraitData(), new ModuleExt()));
 
     public TraitData traitData;
     public ModuleExt moduleExt;
@@ -23,8 +25,8 @@ public class DataManager extends ReloadListener<Object> {
     private final ImmutableList<WatchableData> data;
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, instance::serverStarting);
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, instance::playerConnected);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, DataManager::serverStarting);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, DataManager::playerConnected);
     }
 
     protected DataManager(TraitData traitData, ModuleExt moduleExt) {
@@ -35,29 +37,30 @@ public class DataManager extends ReloadListener<Object> {
     }
 
     public static DataManager getInstance() {
-        return instance;
+        return instance.get();
     }
 
-    public void serverStarting(FMLServerAboutToStartEvent event) {
+    public static void serverStarting(FMLServerAboutToStartEvent event) {
         MinecraftServer server = event.getServer();
-        server.getResourceManager().addReloadListener(this);
-        data.forEach(d -> d.server = server);
+        server.getResourceManager().addReloadListener(getInstance());
+        getInstance().data.forEach(d -> d.server = server);
     }
 
-    public void playerConnected(PlayerEvent.PlayerLoggedInEvent event) {
+    public static void playerConnected(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        data.forEach(d -> d.sync(player));
+        getInstance().data.forEach(d -> d.sync(player));
     }
 
     @Nonnull
     @Override
-    protected Object prepare(@Nonnull IResourceManager rm, @Nonnull IProfiler profilerIn) {
+    public Object prepare(@Nonnull IResourceManager rm, @Nullable IProfiler profilerIn) {
+        CustomPacket.clearSchemes();
         data.forEach(d -> d.doPre(rm));
         return this;
     }
 
     @Override
-    protected void apply(@Nonnull Object obj, @Nonnull IResourceManager rm, @Nonnull IProfiler profilerIn) {
+    public void apply(@Nullable Object obj, @Nonnull IResourceManager rm, @Nullable IProfiler profilerIn) {
         data.forEach(d -> d.doApply(rm));
     }
 

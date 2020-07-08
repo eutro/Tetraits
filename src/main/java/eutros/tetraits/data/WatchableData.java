@@ -1,8 +1,10 @@
 package eutros.tetraits.data;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.concurrent.ThreadTaskExecutor;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -46,7 +48,9 @@ public abstract class WatchableData {
     protected void apply(IResourceManager rm) {
     }
 
-    protected abstract void sync(ServerPlayerEntity player);
+    @Deprecated
+    protected void sync(ServerPlayerEntity player) {
+    }
 
     @Nullable
     public MinecraftServer server;
@@ -56,6 +60,10 @@ public abstract class WatchableData {
         server.getPlayerList()
                 .getPlayers()
                 .forEach(this::sync);
+    }
+
+    protected ThreadTaskExecutor<? extends Runnable> getExecutor() {
+        return server == null ? Minecraft.getInstance() : server;
     }
 
 }
