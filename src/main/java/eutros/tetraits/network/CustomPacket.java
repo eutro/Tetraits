@@ -2,6 +2,7 @@ package eutros.tetraits.network;
 
 import TetraitsAPI.IPacketScheme;
 import eutros.tetraits.Tetraits;
+import eutros.tetraits.data.DataManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -12,17 +13,22 @@ import java.util.function.Supplier;
 
 public class CustomPacket {
 
-    private static final ThreadLocal<Map<String, IPacketScheme>> schemeMap = ThreadLocal.withInitial(HashMap::new);
+    public static class Handler {
+
+        public final Map<String, IPacketScheme> schemeMap = new HashMap<>();
+
+        public final void clearSchemes() {
+            schemeMap.clear();
+        }
+
+    }
+
     private final String schemeKey;
     private final IPacketScheme scheme;
     private final Object data;
 
     private static Map<String, IPacketScheme> getSchemeMap() {
-        return schemeMap.get();
-    }
-
-    public static void clearSchemes() {
-        getSchemeMap().clear();
+        return DataManager.getInstance().customPacketHandler.schemeMap;
     }
 
     public static void putScheme(String key, IPacketScheme scheme) {
