@@ -1,8 +1,7 @@
 package eutros.tetraits.data;
 
 import clojure.lang.Compiler;
-import clojure.lang.IFn;
-import clojure.lang.IPersistentMap;
+import clojure.lang.*;
 import eutros.tetraits.Tetraits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
@@ -11,6 +10,7 @@ import net.minecraft.util.concurrent.ThreadTaskExecutor;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.FileVisitResult;
@@ -40,10 +40,12 @@ public abstract class ClojureData implements FileVisitor<Path> {
     public void load() {
         data.clear();
 
-        try {
-            Files.walkFileTree(getDataRoot(), this);
-        } catch(IOException ignored) {
-            // This shouldn't happen.
+        if(Files.exists(getDataRoot())) {
+            try {
+                Files.walkFileTree(getDataRoot(), this);
+            } catch(IOException ignored) {
+                // This shouldn't happen.
+            }
         }
     }
 
@@ -103,18 +105,45 @@ public abstract class ClojureData implements FileVisitor<Path> {
                         Tetraits.LOGGER.error("{} didn't return IFn, should be a function.", rl);
                     }
                 } catch(Compiler.CompilerException compilerError) {
+                    BufferedReader br = null;
+                    try {
+                        br = Files.newBufferedReader(file);
+                    } catch(IOException e) {
+                        // oh what the hell
+                    }
                     IPersistentMap data = compilerError.getData();
-                    Tetraits.LOGGER.error(
-                            "Couldn't compile \"{}\".\n" +
-                                    "   Error at line: {}\n" +
-                                    "          column: {}\n" +
-                                    "   {}\n" +
-                                    "   Caused by: {}",
+                    Integer column = (Integer) data.valAt(Compiler.CompilerException.ERR_COLUMN);
+                    StringBuilder error = new StringBuilder("Couldn't compile \"{}\".\n");
+                    error.append("   Error at line: {}\n");
+                    error.append("          column: {}\n");
+
+                    if(br != null) {
+                        br.lines()
+                                .skip(compilerError.line - 1)
+                                .findFirst()
+                                .ifPresent(line -> {
+                                    error.append("==========================================================\n");
+                                    error.append(line);
+                                    error.append('\n');
+                                    error.append(new String(new char[column]).replace('\0', ' '));
+                                    error.append("^ here\n");
+                                    error.append("==========================================================\n");
+                                });
+                    }
+
+                    error.append("    {}\n");
+
+                    Throwable cause = compilerError.getCause();
+                    while(cause != null) {
+                        error.append(String.format("    Caused by: %s\n", cause));
+                        cause = cause.getCause();
+                    }
+
+                    Tetraits.LOGGER.error(error.toString(),
                             rl,
                             compilerError.line,
-                            data.valAt(Compiler.CompilerException.ERR_COLUMN),
-                            compilerError.toString(),
-                            compilerError.getCause());
+                            column,
+                            compilerError.toString());
                 }
             });
         } catch(IOException e) {
