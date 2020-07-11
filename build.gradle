@@ -114,9 +114,7 @@ dependencies {
     implementation fg.deobf("curse.maven:tetra:${tetra_file}") // please
     runtimeOnly fg.deobf("curse.maven:mgui:${mgui_file}")
 
-    def clojure = 'org.clojure:clojure:1.10.1'
-    shade clojure
-    runtimeOnly clojure
+    shade 'org.clojure:clojure:1.10.1'
 
     runtimeOnly fg.deobf('vazkii.botania:Botania:r1.15-388.458')
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_ver}-1.2-35.186")
