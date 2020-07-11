@@ -1,9 +1,9 @@
 package eutros.tetraits.handler;
 
 import clojure.lang.AFn;
-import clojure.lang.IFn;
 import eutros.tetraits.Tetraits;
-import eutros.tetraits.data.DataManager;
+import eutros.tetraits.data.CapData;
+import eutros.tetraits.util.TetraHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -35,7 +35,6 @@ public class CapabilityHandler {
     private static class DataCapability implements ICapabilityProvider {
 
         private final ItemStack stack;
-        private final Map<Capability<?>, Object> capMap = new HashMap<>();
         private final Map<ResourceLocation, Object> cache = new HashMap<>();
 
         public DataCapability(ItemStack stack) {
@@ -45,39 +44,37 @@ public class CapabilityHandler {
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            DataManager dm = DataManager.getInstance();
-            try {
-                @SuppressWarnings("unchecked")
-                T ret = (T) capMap.computeIfAbsent(cap,
-                        c -> {
-                            for(ResourceLocation rl : dm.moduleExt.getCaps(stack)) {
-                                IFn fn = dm.capData.capMap.get(rl);
-                                if(fn == null) {
-                                    return null;
-                                }
+            return TetraHelper.forAllFrom(stack,
+                    CapData.getInstance(),
+                    (rl, fn, extra) -> {
+                        try {
+                            @SuppressWarnings("unchecked")
+                            T ret = (T) fn.invoke(stack,
+                                    cap,
+                                    side,
+                                    new AFn() {
+                                        @Override
+                                        public Object invoke() {
+                                            return cache.get(rl);
+                                        }
 
-                                return fn.invoke(stack, cap, side, new AFn() {
-                                    @Override
-                                    public Object invoke() {
-                                        return cache.get(rl);
-                                    }
+                                        @Override
+                                        public Object invoke(Object arg1) {
+                                            return cache.put(rl, arg1);
+                                        }
+                                    },
+                                    extra);
 
-                                    @Override
-                                    public Object invoke(Object arg1) {
-                                        return cache.put(rl, arg1);
-                                    }
-                                });
+                            if(ret != null) {
+                                return LazyOptional.of(() -> ret);
                             }
-                            return null;
-                        });
-                if(ret != null) {
-                    return LazyOptional.of(() -> ret);
-                }
-            } catch(ClassCastException e) {
-                Tetraits.LOGGER.error("Wrong type returned for capability: {}.", cap);
-            }
+                        } catch(ClassCastException e) {
+                            Tetraits.LOGGER.error("Wrong type returned for capability: {}.", cap);
+                        }
 
-            return LazyOptional.empty();
+                        return null;
+                    })
+                    .orElseGet(LazyOptional::empty);
         }
 
     }

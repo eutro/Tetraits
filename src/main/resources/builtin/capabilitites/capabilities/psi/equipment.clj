@@ -1,11 +1,11 @@
-(fn [stack cap side cache]
+(fn [stack cap side cache slots]
   (if (nil? (cache))
     (cache
      (let [gOCCompound (fn [] (TetraitsAPI.ItemStackHelper/getOrCreateChildTag stack "tetraits:psi_tool"))]
        (reify
         vazkii.psi.api.cad.ISocketable
         (isSocketSlotAvailable [this slot]
-                               (< slot 4))
+                               (< slot slots))
         (getBulletInSocket [this slot]
                            (let [cmp
                                  (->

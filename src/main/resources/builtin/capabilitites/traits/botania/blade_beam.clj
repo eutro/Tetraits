@@ -54,7 +54,7 @@
                                      (decode [this buf] nil)
                                      (handle [this data ctx] (handlePacket ctx))))
 
-(fn [evt]
+(fn [evt _]
   (case evt
     "ENTITY_ATTACK"    (fn [stack world player target]
                          (trySpawnBurst stack player world))

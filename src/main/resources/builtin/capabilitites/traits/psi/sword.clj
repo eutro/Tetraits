@@ -2,7 +2,7 @@
   (reify
    vazkii.psi.common.item.tool.IPsimetalTool))
 
-(fn [evt]
+(fn [evt _]
   (case evt
     "ATTACK" (fn [stack world attacker target source amount]
                (if (and (.isEnabled pstool stack)

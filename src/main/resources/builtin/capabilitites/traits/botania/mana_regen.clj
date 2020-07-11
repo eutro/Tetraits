@@ -12,7 +12,7 @@
            (dec)
            (TetraitsAPI.ItemStackHelper/setDamage stack)))))
 
-(fn [evt]
+(fn [evt manaPerDamage]
   (case evt
-    "INVENTORY_TICK" (regen 60)
+    "INVENTORY_TICK" (regen manaPerDamage)
     nil))

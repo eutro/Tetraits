@@ -1,9 +1,10 @@
-(fn [evt]
+(fn [evt doRegen]
   (case evt
     "INVENTORY_TICK" (fn [stack world player slot isSelected]
-                       (vazkii.psi.common.item.tool.IPsimetalTool/regen stack
-                                                                        player
-                                                                        isSelected))
+                       (if doRegen
+                         (vazkii.psi.common.item.tool.IPsimetalTool/regen stack
+                                                                          player
+                                                                          isSelected)))
     "TOOLTIP"        (fn [stack world player flags tooltip]
                        (.add tooltip
                              (net.minecraft.util.text.TranslationTextComponent. "psimisc.spell_selected"

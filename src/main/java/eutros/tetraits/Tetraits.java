@@ -1,16 +1,16 @@
 package eutros.tetraits;
 
-import eutros.tetraits.data.ClientDataManager;
 import eutros.tetraits.data.DataManager;
 import eutros.tetraits.handler.CapabilityHandler;
 import eutros.tetraits.handler.TraitHandler;
 import eutros.tetraits.network.PacketHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,18 +25,16 @@ public class Tetraits {
         PacketHandler.init();
         TraitHandler.init();
         CapabilityHandler.init();
-        if(FMLEnvironment.dist.isClient()) {
-            Minecraft mc = Minecraft.getInstance();
-            mc.enqueue(() -> {
-                DataManager dm = DataManager.getInstance();
-                ClientDataManager rm = new ClientDataManager((SimpleReloadableResourceManager) mc.getResourceManager());
-                MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggedInEvent evt) -> new Thread(() -> {
-                            dm.prepare(rm, null);
-                            dm.apply(null, rm, null);
-                        }).start()
-                );
-            });
-        }
+
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addListener((FMLClientSetupEvent event) ->
+                Minecraft.getInstance().enqueue(() -> {
+                            DataManager dm = DataManager.getInstance();
+                            MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggedInEvent evt) ->
+                                    new Thread(dm::load).start());
+                        }
+                )
+        );
     }
 
 }

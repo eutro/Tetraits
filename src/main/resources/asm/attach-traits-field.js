@@ -16,7 +16,7 @@ function initializeCoreMod() {
             },
             "transformer": function (clazz) {
                 clazz.fields.add(new FieldNode(
-                    Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC,
+                    Opcodes.ACC_PUBLIC,
                     FIELD_NAME,
                     "Ljava/util/Map;",
                     "Ljava/util/Map<Lnet/minecraft/util/ResourceLocation;Ljava/lang/Object;>;",

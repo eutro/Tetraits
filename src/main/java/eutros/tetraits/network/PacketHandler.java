@@ -1,15 +1,13 @@
 package eutros.tetraits.network;
 
 import eutros.tetraits.Tetraits;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class PacketHandler {
 
-    private static final String PROTOCOL = "0.0.1";
+    private static final String PROTOCOL = "0.0.2";
     public static SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Tetraits.MOD_ID, "chan"),
             () -> PROTOCOL,
@@ -18,13 +16,7 @@ public class PacketHandler {
     );
 
     public static void init() {
-        int index = 0;
-        CHANNEL.registerMessage(index++, UpdateModuleExtPacket.class, UpdateModuleExtPacket::encode, UpdateModuleExtPacket::decode, UpdateModuleExtPacket::handle);
-        CHANNEL.registerMessage(index, CustomPacket.class, CustomPacket::encode, CustomPacket::decode, CustomPacket::handle);
-    }
-
-    public static void sendToPlayer(ServerPlayerEntity player, Object packet) {
-        CHANNEL.sendTo(packet, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+        CHANNEL.registerMessage(0, CustomPacket.class, CustomPacket::encode, CustomPacket::decode, CustomPacket::handle);
     }
 
 }

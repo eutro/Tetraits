@@ -5,6 +5,8 @@ import clojure.lang.ArraySeq;
 import clojure.lang.IFn;
 import eutros.tetraits.Tetraits;
 import eutros.tetraits.data.DataManager;
+import eutros.tetraits.data.TraitData;
+import eutros.tetraits.util.TetraHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +24,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 
 public class TraitHandler {
@@ -303,23 +304,21 @@ public class TraitHandler {
 
     private void invokeTraits(Type type, ItemStack stack, Consumer<IFn> invoker) {
         if(stack.isEmpty()) return;
-        DataManager dm = DataManager.getInstance();
-        Set<ResourceLocation> traits = dm.moduleExt.getTraits(stack);
-        for(ResourceLocation rl : traits) {
-            IFn action = dm.traitData.traitMap.get(rl);
-            if(action == null) continue;
-
-            invokeTrait(invoker, type, rl, action);
-        }
+        TetraHelper.forAllFrom(stack,
+                TraitData.getInstance(),
+                (rl, fn, extra) -> {
+                    invokeTrait(invoker, type, rl, fn, extra);
+                    return null;
+                });
     }
 
-    private void invokeTrait(Consumer<IFn> invoker, Type type, ResourceLocation rl, IFn action) {
+    private void invokeTrait(Consumer<IFn> invoker, Type type, ResourceLocation rl, IFn action, Object extra) {
         try {
-            Optional.ofNullable((IFn) action.invoke(type.name()))
+            Optional.ofNullable((IFn) action.invoke(type.name(), extra))
                     .ifPresent(invoker);
         } catch(ClassCastException e) {
             Tetraits.LOGGER.error("Bad function: {}, didn't return a function itself.", rl.toString());
-            DataManager.getInstance().traitData.traitMap.remove(rl);
+            DataManager.getInstance().traitData.data.remove(rl);
         } catch(Throwable t) {
             Tetraits.LOGGER.debug("Error: {}", t.getMessage());
         }
