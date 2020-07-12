@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class PacketHandler {
 
-    private static final String PROTOCOL = "0.0.2";
+    private static final String PROTOCOL = "1";
     public static SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Tetraits.MOD_ID, "chan"),
             () -> PROTOCOL,

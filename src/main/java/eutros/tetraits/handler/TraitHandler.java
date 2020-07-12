@@ -320,7 +320,7 @@ public class TraitHandler {
             Tetraits.LOGGER.error("Bad function: {}, didn't return a function itself.", rl.toString());
             DataManager.getInstance().traitData.data.remove(rl);
         } catch(Throwable t) {
-            Tetraits.LOGGER.debug("Error: {}", t.getMessage());
+            Tetraits.LOGGER.error("Error executing trait {}: {}", rl, t.getMessage());
         }
     }
 
