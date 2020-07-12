@@ -7,7 +7,7 @@ public class TraitData extends ClojureData {
     }
 
     @Override
-    protected String getPath() {
+    public String getPath() {
         return "traits";
     }
 

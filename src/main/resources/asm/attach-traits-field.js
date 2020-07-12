@@ -19,7 +19,7 @@ function initializeCoreMod() {
                     Opcodes.ACC_PUBLIC,
                     FIELD_NAME,
                     "Ljava/util/Map;",
-                    "Ljava/util/Map<Lnet/minecraft/util/ResourceLocation;Ljava/lang/Object;>;",
+                    "Ljava/util/Map<Ljava/lang/String;Ljava/lang/Object;>;",
                     null
                 ));
 

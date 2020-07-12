@@ -1,7 +1,8 @@
 package eutros.tetraits.data;
 
 import clojure.lang.Compiler;
-import clojure.lang.*;
+import clojure.lang.IFn;
+import clojure.lang.IPersistentMap;
 import eutros.tetraits.Tetraits;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
@@ -29,13 +30,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
         return data.get(location);
     }
 
-    protected abstract String getPath();
-
-    private final ResourceLocation location = new ResourceLocation(Tetraits.MOD_ID, getPath());
-
-    public ResourceLocation getType() {
-        return location;
-    }
+    public abstract String getPath();
 
     public void load() {
         data.clear();
@@ -102,7 +97,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
                         data.put(rl, (IFn) loaded);
                         Tetraits.LOGGER.debug("Loaded {}.", rl);
                     } else {
-                        Tetraits.LOGGER.error("{} didn't return IFn, should be a function.", rl);
+                        Tetraits.LOGGER.error("{} didn't return IFn.", rl);
                     }
                 } catch(Compiler.CompilerException compilerError) {
                     BufferedReader br = null;

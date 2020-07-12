@@ -42,7 +42,7 @@ public class TetraHelper {
         //noinspection unchecked
         return stream.map(ASMFieldHandler::getTetraitsField)
                 .filter(Objects::nonNull)
-                .map(tetraits -> tetraits.get(store.getType()))
+                .map(tetraits -> tetraits.get(store.getPath()))
                 .filter(Map.class::isInstance)
                 .map(obj -> (Map<Object, Object>) obj)
                 .map(Map::entrySet)

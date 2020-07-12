@@ -7,7 +7,7 @@ public class CapData extends ClojureData {
     }
 
     @Override
-    protected String getPath() {
+    public String getPath() {
         return "capabilities";
     }
 
