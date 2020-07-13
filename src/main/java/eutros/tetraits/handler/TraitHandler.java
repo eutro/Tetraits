@@ -7,49 +7,266 @@ import eutros.tetraits.Tetraits;
 import eutros.tetraits.data.DataManager;
 import eutros.tetraits.data.TraitData;
 import eutros.tetraits.util.TetraHelper;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class TraitHandler {
 
     private enum Type {
-        ARROW_LOOSE,
-        ARROW_NOCK,
-        ATTACK,
-        BREAK_BLOCK,
-        BREAK_SPEED,
-        CRIT,
-        DAMAGE,
-        ENTITY_ATTACK,
-        ENTITY_INTERACT,
-        ENTITY_INTERACT_SPECIFIC,
-        EXPERIENCE_DROP,
-        GENERIC,
-        HURT,
-        INVENTORY_TICK,
-        JUMP,
-        LEFT_CLICK_BLOCK,
-        LEFT_CLICK_EMPTY,
-        RIGHT_CLICK_AIR,
-        RIGHT_CLICK_BLOCK,
-        RIGHT_CLICK_ITEM,
-        TOOLTIP
+        /**
+         * @see ArrowLooseEvent
+         */
+        ARROW_LOOSE(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                int.class,          // charge
+                boolean.class       // hasAmmo
+        ),
+        /**
+         * @see ArrowNockEvent
+         */
+        ARROW_NOCK(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Hand.class,         // hand
+                boolean.class,      // hasAmmo
+                ActionResult.class, // action (ItemStack)
+                SetFunc.class       // setAction (ActionResult<ItemStack>)
+        ),
+        /**
+         * @see LivingAttackEvent
+         */
+        ATTACK(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Entity.class        // target
+        ),
+        /**
+         * @see BlockEvent.BreakEvent
+         */
+        BREAK_BLOCK(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                BlockPos.class,     // pos
+                int.class,          // expToDrop
+                SetFunc.class       // setExpToDrop (int)
+        ),
+        /**
+         * @see PlayerEvent.BreakSpeed
+         */
+        BREAK_SPEED(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                BlockPos.class,     // pos
+                BlockState.class,   // state
+                float.class,        // newSpeed
+                float.class,        // originalSpeed
+                SetFunc.class       // setNewSpeed (float)
+        ),
+        /**
+         * @see CriticalHitEvent
+         */
+        CRIT(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Entity.class,       // target
+                boolean.class,      // isVanillaCritical
+                float.class,        // damageModifier
+                float.class,        // oldDamageModifier
+                SetFunc.class       // setDamageModifier (float)
+        ),
+        /**
+         * @see LivingDamageEvent
+         */
+        DAMAGE(
+                ItemStack.class,    // stack
+                World.class,        // world
+                LivingEntity.class, // entity
+                DamageSource.class, // source
+                float.class,        // amount
+                SetFunc.class       // setAmount (float)
+        ),
+        /**
+         * @see AttackEntityEvent
+         */
+        ENTITY_ATTACK(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Entity.class        // target
+        ),
+        /**
+         * @see PlayerInteractEvent.EntityInteract
+         */
+        ENTITY_INTERACT(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Hand.class,         // hand
+                Entity.class        // target
+        ),
+        /**
+         * @see PlayerInteractEvent.EntityInteractSpecific
+         */
+        ENTITY_INTERACT_SPECIFIC(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Hand.class,         // hand
+                Entity.class,       // target
+                Vec3d.class         // localPos
+        ),
+        /**
+         * @see LivingExperienceDropEvent
+         */
+        EXPERIENCE_DROP(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                LivingEntity.class, // entity
+                int.class,          // droppedExperience
+                int.class           // originalExperience
+        ),
+        /**
+         * @see LivingEvent
+         * @see #onGenericEvent(LivingEvent)
+         */
+        GENERIC(
+                ItemStack.class,    // stack
+                World.class,        // world
+                LivingEntity.class  // entity
+        ),
+        /**
+         * @see LivingHurtEvent
+         */
+        HURT(
+                ItemStack.class,    // stack
+                World.class,        // world
+                LivingEntity.class, // entity
+                DamageSource.class, // source
+                float.class,        // amount
+                SetFunc.class       // setAmount (float)
+        ),
+        /**
+         * @see Item#inventoryTick(ItemStack, World, Entity, int, boolean)
+         */
+        INVENTORY_TICK(
+                ItemStack.class,    // stack
+                World.class,        // world
+                LivingEntity.class, // entity
+                int.class,          // slot
+                boolean.class       // isSelected
+        ),
+        /**
+         * @see LivingEvent.LivingJumpEvent
+         */
+        JUMP(
+                ItemStack.class,    // stack
+                World.class,        // world
+                LivingEntity.class  // entity
+        ),
+        /**
+         * @see PlayerInteractEvent.LeftClickBlock
+         */
+        LEFT_CLICK_BLOCK(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Hand.class,         // hand
+                BlockPos.class,     // pos
+                Direction.class,    // face
+                Event.Result.class, // useBlock
+                SetFunc.class,      // setUseBlock (Event.Result)
+                Event.Result.class, // useItem
+                SetFunc.class       // setUseItem (Event.Result)
+        ),
+        /**
+         * @see PlayerInteractEvent.LeftClickEmpty
+         */
+        LEFT_CLICK_EMPTY(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Hand.class          // hand
+        ),
+        /**
+         * @see PlayerInteractEvent.RightClickEmpty
+         */
+        RIGHT_CLICK_EMPTY(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Hand.class          // hand
+        ),
+        /**
+         * @see PlayerInteractEvent.RightClickBlock
+         */
+        RIGHT_CLICK_BLOCK(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Hand.class,         // hand
+                BlockPos.class,     // pos
+                Direction.class,    // face
+                Event.Result.class, // useBlock
+                SetFunc.class,      // setUseBlock (Event.Result)
+                Event.Result.class, // useItem
+                SetFunc.class       // setUseItem (Event.Result)
+        ),
+        /**
+         * @see PlayerInteractEvent.RightClickItem
+         */
+        RIGHT_CLICK_ITEM(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                Hand.class,         // hand
+                BlockPos.class,     // pos
+                Direction.class     // face
+        ),
+        /**
+         * @see ItemTooltipEvent
+         */
+        TOOLTIP(
+                ItemStack.class,    // stack
+                World.class,        // world
+                PlayerEntity.class, // player
+                ITooltipFlag.class, // flags
+                List.class          // tooltip (ITextComponent)
+        );
+
+        @SuppressWarnings("unused")
+        Type(Class<?>... classes) {
+        }
     }
 
     private static TraitHandler instance = new TraitHandler();
@@ -78,7 +295,7 @@ public class TraitHandler {
     }
 
     /**
-     * This includes all the events below as well.
+     * This includes most of the events below as well.
      * <p>
      * This is just for completeness.
      */
@@ -96,6 +313,7 @@ public class TraitHandler {
         invokeSimple(Type.EXPERIENCE_DROP,
                 evt,
                 evt.getAttackingPlayer(),
+                evt.getEntityLiving(),
                 evt.getDroppedExperience(),
                 evt.getOriginalExperience());
     }
@@ -150,51 +368,51 @@ public class TraitHandler {
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock evt) {
         invokeSimple(Type.LEFT_CLICK_BLOCK,
-                evt.getEntityLiving(),
+                evt.getPlayer(),
                 evt.getItemStack(),
                 evt.getHand(),
                 evt.getPos(),
                 evt.getFace(),
                 evt.getUseBlock(),
-                evt.getUseItem());
+                SetFunc.of(evt::setUseBlock),
+                evt.getUseItem(),
+                SetFunc.of(evt::setUseItem));
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty evt) {
         invokeSimple(Type.LEFT_CLICK_EMPTY,
-                evt.getEntityLiving(),
+                evt.getPlayer(),
                 evt.getItemStack(),
-                evt.getHand(),
-                evt.getPos(),
-                evt.getFace());
+                evt.getHand());
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onRightClickBlock(PlayerInteractEvent.RightClickBlock evt) {
         invokeSimple(Type.RIGHT_CLICK_BLOCK,
-                evt.getEntityLiving(),
+                evt.getPlayer(),
                 evt.getItemStack(),
                 evt.getHand(),
                 evt.getPos(),
                 evt.getFace(),
                 evt.getUseBlock(),
-                evt.getUseItem());
+                SetFunc.of(evt::setUseBlock),
+                evt.getUseItem(),
+                SetFunc.of(evt::setUseItem));
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onRightClickEmpty(PlayerInteractEvent.RightClickEmpty evt) {
-        invokeSimple(Type.RIGHT_CLICK_AIR,
-                evt.getEntityLiving(),
+        invokeSimple(Type.RIGHT_CLICK_EMPTY,
+                evt.getPlayer(),
                 evt.getItemStack(),
-                evt.getHand(),
-                evt.getPos(),
-                evt.getFace());
+                evt.getHand());
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onRightClickItem(PlayerInteractEvent.RightClickItem evt) {
         invokeSimple(Type.RIGHT_CLICK_ITEM,
-                evt.getEntityLiving(),
+                evt.getPlayer(),
                 evt.getItemStack(),
                 evt.getHand(),
                 evt.getPos(),
@@ -205,22 +423,18 @@ public class TraitHandler {
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onEntityInteract(PlayerInteractEvent.EntityInteract evt) {
         invokeSimple(Type.ENTITY_INTERACT,
-                evt.getEntityLiving(),
+                evt.getPlayer(),
                 evt.getItemStack(),
                 evt.getHand(),
-                evt.getPos(),
-                evt.getFace(),
                 evt.getTarget());
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific evt) {
         invokeSimple(Type.ENTITY_INTERACT_SPECIFIC,
-                evt.getEntityLiving(),
+                evt.getPlayer(),
                 evt.getItemStack(),
                 evt.getHand(),
-                evt.getPos(),
-                evt.getFace(),
                 evt.getTarget(),
                 evt.getLocalPos());
     }
@@ -239,7 +453,7 @@ public class TraitHandler {
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onArrowLoose(ArrowLooseEvent evt) {
         invokeSimple(Type.ARROW_LOOSE,
-                evt.getEntityLiving(),
+                evt.getPlayer(),
                 evt.getBow(),
                 evt.getCharge(),
                 evt.hasAmmo());
@@ -274,7 +488,7 @@ public class TraitHandler {
     }
 
     @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent(priority = EventPriority.HIGH)
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void onTooltip(ItemTooltipEvent evt) {
         invokeSimple(Type.TOOLTIP,
                 evt.getPlayer(),

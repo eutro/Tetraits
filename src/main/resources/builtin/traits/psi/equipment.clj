@@ -1,4 +1,4 @@
-(fn [evt doRegen]
+(fn [evt [doRegen addTooltip]]
   (case evt
     "INVENTORY_TICK" (fn [stack world player slot isSelected]
                        (if doRegen
@@ -6,8 +6,10 @@
                                                                           player
                                                                           isSelected)))
     "TOOLTIP"        (fn [stack world player flags tooltip]
-                       (.add tooltip
-                             (net.minecraft.util.text.TranslationTextComponent. "psimisc.spell_selected"
-                                                                                (into-array
-                                                                                 [(vazkii.psi.api.cad.ISocketable/getSocketedItemName stack "psimisc.none")]))))
+                       (if addTooltip
+                         (.add tooltip
+                               1
+                               (net.minecraft.util.text.TranslationTextComponent. "psimisc.spell_selected"
+                                                                                  (into-array
+                                                                                   [(vazkii.psi.api.cad.ISocketable/getSocketedItemName stack "psimisc.none")])))))
     nil))
