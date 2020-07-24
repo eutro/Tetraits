@@ -8,7 +8,7 @@
                  (if (and (.isEnabled pstool stack)
                           (instance? net.minecraft.entity.player.PlayerEntity attacker))
                    (let [cad (vazkii.psi.api.PsiAPI/getPlayerCAD attacker)]
-                     (if (not (TetraitsAPI.ItemStackHelper/isEmpty cad))
+                     (if-not (TetraitsAPI.ItemStackHelper/isEmpty cad)
                        (vazkii.psi.common.item.ItemCAD/cast world
                                                             attacker
                                                             (vazkii.psi.common.core.handler.PlayerDataHandler/get attacker)

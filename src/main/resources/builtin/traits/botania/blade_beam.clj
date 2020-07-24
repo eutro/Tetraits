@@ -17,17 +17,17 @@
 
       trySpawnBurst
       (fn [stack player world]
-        (if (and
-             (not (TetraitsAPI.WorldHelper/isRemote world))
-             (-> (TetraitsAPI.EntityHelper/getCooledAttackStrength player 0)
-                 (= 1.0)))
-          (do
-            (->> (getBurst player)
-                 (TetraitsAPI.WorldHelper/addEntity world))
-            (vazkii.botania.common.item.equipment.tool.ToolCommons/damageItem stack
-                                                                              1
-                                                                              player
-                                                                              100))))
+        (when
+          (and
+           (not (TetraitsAPI.WorldHelper/isRemote world))
+           (-> (TetraitsAPI.EntityHelper/getCooledAttackStrength player 0)
+               (= 1.0)))
+          (->> (getBurst player)
+               (TetraitsAPI.WorldHelper/addEntity world))
+          (vazkii.botania.common.item.equipment.tool.ToolCommons/damageItem stack
+                                                                            1
+                                                                            player
+                                                                            100)))
 
       handlePacket
       (fn [ctx]

@@ -1,6 +1,7 @@
 package eutros.tetraits.data;
 
-import clojure.lang.Compiler;
+import clojure.java.api.Clojure;
+import clojure.lang.Compiler.CompilerException;
 import clojure.lang.IFn;
 import clojure.lang.IPersistentMap;
 import eutros.tetraits.Tetraits;
@@ -13,7 +14,6 @@ import org.apache.commons.io.FilenameUtils;
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
@@ -25,6 +25,7 @@ import java.util.Map;
 public abstract class ClojureData implements FileVisitor<Path> {
 
     public final Map<ResourceLocation, IFn> data = new HashMap<>();
+    public static final IFn loadClass = Clojure.var("clojure.core", "load-file");
 
     public IFn get(ResourceLocation location) {
         return data.get(location);
@@ -82,37 +83,25 @@ public abstract class ClojureData implements FileVisitor<Path> {
                         relative.subpath(1, relative.getNameCount())
                                 .toString()));
 
-        try {
-            InputStreamReader rdr = new InputStreamReader(Files.newInputStream(file));
-            getExecutor().runImmediately(() -> {
+        getExecutor().runImmediately(() -> {
+            try {
                 try {
-                    Object loaded = Compiler.load(
-                            rdr,
-                            file.toAbsolutePath()
-                                    .normalize()
-                                    .toString(),
-                            rl.toString()
-                    );
+                    Object loaded = loadClass.invoke(file.toAbsolutePath().toString());
                     if(loaded instanceof IFn) {
                         data.put(rl, (IFn) loaded);
                         Tetraits.LOGGER.debug("Loaded {}.", rl);
                     } else {
                         Tetraits.LOGGER.error("{} didn't return IFn.", rl);
                     }
-                } catch(Compiler.CompilerException compilerError) {
-                    BufferedReader br = null;
-                    try {
-                        br = Files.newBufferedReader(file);
-                    } catch(IOException e) {
-                        // oh what the hell
-                    }
+                } catch(CompilerException compilerError) {
                     IPersistentMap data = compilerError.getData();
-                    Integer column = (Integer) data.valAt(Compiler.CompilerException.ERR_COLUMN);
+                    Integer column = (Integer) data.valAt(CompilerException.ERR_COLUMN);
                     StringBuilder error = new StringBuilder("Couldn't compile \"{}\".\n");
                     error.append("   Error at line: {}\n");
                     error.append("          column: {}\n");
 
-                    if(br != null) {
+                    try {
+                        BufferedReader br = Files.newBufferedReader(file);
                         br.lines()
                                 .skip(compilerError.line - 1)
                                 .findFirst()
@@ -124,6 +113,9 @@ public abstract class ClojureData implements FileVisitor<Path> {
                                     error.append("^ here\n");
                                     error.append("==========================================================\n");
                                 });
+                        br.close();
+                    } catch(IOException e) {
+                        // oh what the hell
                     }
 
                     error.append("    {}\n");
@@ -140,10 +132,11 @@ public abstract class ClojureData implements FileVisitor<Path> {
                             column,
                             compilerError.toString());
                 }
-            });
-        } catch(IOException e) {
-            Tetraits.LOGGER.error("Couldn't load file {}.", file, e);
-        }
+            } catch(RuntimeException e) {
+                // Clojure rethrows IOExceptions as such
+                Tetraits.LOGGER.error("Couldn't load file {}.", file, e);
+            }
+        });
 
         return FileVisitResult.CONTINUE;
     }
