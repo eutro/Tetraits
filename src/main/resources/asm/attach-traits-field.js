@@ -44,7 +44,7 @@ function initializeCoreMod() {
                     "Ljava/util/Map;"
                 ));
 
-                var target = ASM.findFirstInstruction(method, Opcodes.ACONST_NULL);
+                var target = ASM.findFirstInstruction(method, Opcodes.INVOKESTATIC);
 
                 method.instructions.insert(target, newInstructions);
                 method.instructions.remove(target);

@@ -58,8 +58,8 @@ public class CustomPacket {
         buf.writeString(schemeKey);
         try {
             scheme.encode(data, buf);
-        } catch(Throwable t) {
-            removeScheme("encode", schemeKey, t);
+        } catch(Exception e) {
+            removeScheme("encode", schemeKey, e);
         }
     }
 
@@ -73,8 +73,8 @@ public class CustomPacket {
         } else {
             try {
                 data = scheme.decode(buf);
-            } catch(Throwable t) {
-                removeScheme("decode", schemeKey, t);
+            } catch(Exception e) {
+                removeScheme("decode", schemeKey, e);
                 return null;
             }
         }
@@ -85,15 +85,15 @@ public class CustomPacket {
         NetworkEvent.Context ctx = supplier.get();
         try {
             scheme.handle(data, ctx);
-        } catch(Throwable t) {
-            removeScheme("handle", schemeKey, t);
+        } catch(Exception e) {
+            removeScheme("handle", schemeKey, e);
             return;
         }
         ctx.setPacketHandled(true);
     }
 
-    private static void removeScheme(String failure, String schemeKey, Throwable t) {
-        Tetraits.LOGGER.fatal(String.format("Scheme: \"%s\" failed to %s data. Removing scheme.", schemeKey, failure), t);
+    private static void removeScheme(String failure, String schemeKey, Exception e) {
+        Tetraits.LOGGER.fatal(String.format("Scheme: \"%s\" failed to %s data. Removing scheme.", schemeKey, failure), e);
         getSchemeMap().remove(schemeKey);
     }
 

@@ -47,29 +47,26 @@ public class CapabilityHandler {
             return TetraHelper.forAllFrom(stack,
                     CapData.getInstance(),
                     (rl, fn, extra) -> {
-                        try {
-                            @SuppressWarnings("unchecked")
-                            T ret = (T) fn.invoke(stack,
-                                    cap,
-                                    side,
-                                    new AFn() {
-                                        @Override
-                                        public Object invoke() {
-                                            return cache.get(rl);
-                                        }
+                        @SuppressWarnings("unchecked")
+                        // the actual cast happens somewhere else, and I have no way to cast it properly earlier
+                        T ret = (T) fn.invoke(stack,
+                                cap,
+                                side,
+                                new AFn() {
+                                    @Override
+                                    public Object invoke() {
+                                        return cache.get(rl);
+                                    }
 
-                                        @Override
-                                        public Object invoke(Object arg1) {
-                                            return cache.put(rl, arg1);
-                                        }
-                                    },
-                                    extra);
+                                    @Override
+                                    public Object invoke(Object arg1) {
+                                        return cache.put(rl, arg1);
+                                    }
+                                },
+                                extra);
 
-                            if(ret != null) {
-                                return LazyOptional.of(() -> ret);
-                            }
-                        } catch(ClassCastException e) {
-                            Tetraits.LOGGER.error("Wrong type returned for capability: {}.", cap);
+                        if(ret != null) {
+                            return LazyOptional.of(() -> ret);
                         }
 
                         return null;
