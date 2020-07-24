@@ -1,4 +1,4 @@
-package TetraitsAPI;
+package eutros.tetraits.clojure_api;
 
 import net.minecraft.nbt.*;
 import net.minecraft.util.text.ITextComponent;

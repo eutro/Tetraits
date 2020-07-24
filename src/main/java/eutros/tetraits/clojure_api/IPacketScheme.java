@@ -1,4 +1,4 @@
-package TetraitsAPI;
+package eutros.tetraits.clojure_api;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;

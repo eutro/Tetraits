@@ -1,28 +1,40 @@
-(ns traits.psi.sword)
+(ns traits.psi.sword
+  (:import vazkii.psi.api.PsiAPI
+           vazkii.psi.api.cad.ISocketable
+           vazkii.psi.common.item.tool.IPsimetalTool
+           vazkii.psi.common.item.ItemCAD
+           vazkii.psi.common.core.handler.PlayerDataHandler
+           net.minecraft.entity.player.PlayerEntity
+           java.util.function.Consumer
+           vazkii.psi.api.spell.SpellContext
+           eutros.tetraits.clojure_api.ItemStackHelper)
+  (:use tetraits.core))
 
-(let [pstool
-      (reify
-       vazkii.psi.common.item.tool.IPsimetalTool)]
+(if-loaded
+ "psi"
+ (let [pstool
+       (reify
+        IPsimetalTool)]
 
-  (fn [evt _]
-    (case evt
-      "ATTACK" (fn [stack world attacker target source amount]
-                 (if (and (.isEnabled pstool stack)
-                          (instance? net.minecraft.entity.player.PlayerEntity attacker))
-                   (let [cad (vazkii.psi.api.PsiAPI/getPlayerCAD attacker)]
-                     (if-not (TetraitsAPI.ItemStackHelper/isEmpty cad)
-                       (vazkii.psi.common.item.ItemCAD/cast world
-                                                            attacker
-                                                            (vazkii.psi.common.core.handler.PlayerDataHandler/get attacker)
-                                                            (-> (vazkii.psi.api.cad.ISocketable/socketable stack)
-                                                                (.getSelectedBullet))
-                                                            cad
-                                                            5
-                                                            10
-                                                            0.05
-                                                            (reify
-                                                             java.util.function.Consumer
-                                                             (accept [this context]
-                                                                     (set! (. context -attackedEntity) target)
-                                                                     (set! (. context -tool) stack))))))))
-      nil)))
+   (fn [evt _]
+     (case evt
+       "ATTACK" (fn [stack world attacker target source amount]
+                  (if (and (.isEnabled pstool stack)
+                           (instance? PlayerEntity attacker))
+                    (let [cad (PsiAPI/getPlayerCAD attacker)]
+                      (if-not (ItemStackHelper/isEmpty cad)
+                        (ItemCAD/cast world
+                                      attacker
+                                      (PlayerDataHandler/get attacker)
+                                      (-> (ISocketable/socketable stack)
+                                          (.getSelectedBullet))
+                                      cad
+                                      5
+                                      10
+                                      0.05
+                                      (reify
+                                       Consumer
+                                       (accept [this context]
+                                               (set! (.attackedEntity ^SpellContext context) target)
+                                               (set! (.tool ^SpellContext context) stack))))))))
+       nil))))

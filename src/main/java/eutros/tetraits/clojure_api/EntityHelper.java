@@ -1,4 +1,4 @@
-package TetraitsAPI;
+package eutros.tetraits.clojure_api;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;

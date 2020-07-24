@@ -29,6 +29,7 @@ public class TetraHelper {
                 .map(module -> module.getVariantData(stack));
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Optional<T> forAllFrom(ItemStack stack,
                                              ClojureData store,
                                              CljActionFunc<T> action) {
@@ -39,7 +40,6 @@ public class TetraHelper {
 
         Set<IFn> invoked = new HashSet<>();
 
-        //noinspection unchecked
         return stream.map(ASMFieldHandler::getTetraitsField)
                 .filter(Objects::nonNull)
                 .map(tetraits -> tetraits.get(store.getPath()))

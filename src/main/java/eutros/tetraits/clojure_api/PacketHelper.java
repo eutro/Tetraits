@@ -1,4 +1,4 @@
-package TetraitsAPI;
+package eutros.tetraits.clojure_api;
 
 import eutros.tetraits.network.CustomPacket;
 import eutros.tetraits.network.PacketHandler;

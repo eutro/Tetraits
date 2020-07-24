@@ -1,6 +1,6 @@
 package eutros.tetraits.network;
 
-import TetraitsAPI.IPacketScheme;
+import eutros.tetraits.clojure_api.IPacketScheme;
 import eutros.tetraits.Tetraits;
 import eutros.tetraits.data.DataManager;
 import net.minecraft.network.PacketBuffer;

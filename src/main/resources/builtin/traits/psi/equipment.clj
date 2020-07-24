@@ -1,17 +1,24 @@
-(ns traits.psi.equipment)
+(ns traits.psi.equipment
+  (:import vazkii.psi.common.item.tool.IPsimetalTool
+           net.minecraft.util.text.TranslationTextComponent
+           vazkii.psi.api.cad.ISocketable
+           java.util.List)
+  (:use tetraits.core))
 
-(fn [evt [doRegen addTooltip]]
-  (case evt
-    "INVENTORY_TICK" (fn [stack world player slot isSelected]
-                       (if doRegen
-                         (vazkii.psi.common.item.tool.IPsimetalTool/regen stack
-                                                                          player
-                                                                          isSelected)))
-    "TOOLTIP"        (fn [stack world player flags tooltip]
-                       (if addTooltip
-                         (.add tooltip
-                               1
-                               (net.minecraft.util.text.TranslationTextComponent. "psimisc.spell_selected"
-                                                                                  (into-array
-                                                                                   [(vazkii.psi.api.cad.ISocketable/getSocketedItemName stack "psimisc.none")])))))
-    nil))
+(if-loaded
+ "psi"
+ (fn [evt [doRegen addTooltip]]
+   (case evt
+     "INVENTORY_TICK" (fn [stack world player slot isSelected]
+                        (if doRegen
+                          (IPsimetalTool/regen stack
+                                               player
+                                               isSelected)))
+     "TOOLTIP"        (fn [stack world player flags ^List tooltip]
+                        (if addTooltip
+                          (.add tooltip
+                                1
+                                (TranslationTextComponent.
+                                  "psimisc.spell_selected"
+                                  (into-array [(ISocketable/getSocketedItemName stack "psimisc.none")])))))
+     nil)))

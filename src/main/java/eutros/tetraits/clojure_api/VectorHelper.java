@@ -1,4 +1,4 @@
-package TetraitsAPI;
+package eutros.tetraits.clojure_api;
 
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;

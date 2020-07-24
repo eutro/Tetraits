@@ -74,7 +74,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
         Path relative = getDataRoot().relativize(file);
 
         if(relative.getNameCount() < 2) {
-            Tetraits.LOGGER.warn("File: \"{}\" should be in name-spaced subfolder!", file);
+            Tetraits.LOGGER.warn("File: \"{}\" should be in a name-spaced subfolder!", file.toAbsolutePath());
             return FileVisitResult.CONTINUE;
         }
 
@@ -90,7 +90,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
                     if(loaded instanceof IFn) {
                         data.put(rl, (IFn) loaded);
                         Tetraits.LOGGER.debug("Loaded {}.", rl);
-                    } else {
+                    } else if(loaded != null) {
                         Tetraits.LOGGER.error("{} didn't return IFn.", rl);
                     }
                 } catch(CompilerException compilerError) {
