@@ -1,3 +1,5 @@
+(ns traits.botania.blade_beam)
+
 (let [getBurst
       (fn [player]
         (let [burst          (vazkii.botania.common.entity.EntityManaBurst. player)

@@ -1,3 +1,5 @@
+(ns traits.botania.mana_regen)
+
 (fn [evt manaPerDamage]
   (case evt
     "INVENTORY_TICK" (fn [stack world player slot isCurrent]

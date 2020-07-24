@@ -1,3 +1,5 @@
+(ns traits.psi.sword)
+
 (let [pstool
       (reify
        vazkii.psi.common.item.tool.IPsimetalTool)]

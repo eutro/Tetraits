@@ -1,3 +1,5 @@
+(ns traits.psi.equipment)
+
 (fn [evt [doRegen addTooltip]]
   (case evt
     "INVENTORY_TICK" (fn [stack world player slot isSelected]

@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "${mc_ver}-${major}.${minor}.${patch}"
+version = "${mc_ver}-${phase}-${major}.${minor}.${patch}"
 group = 'eutros.tetraits'
 archivesBaseName = 'tetraits'
 

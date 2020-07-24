@@ -1,5 +1,6 @@
 package eutros.tetraits;
 
+import clojure.java.api.Clojure;
 import eutros.tetraits.data.DataManager;
 import eutros.tetraits.handler.CapabilityHandler;
 import eutros.tetraits.handler.TraitHandler;
@@ -14,6 +15,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 @Mod(Tetraits.MOD_ID)
 public class Tetraits {
 
@@ -26,6 +30,8 @@ public class Tetraits {
         TraitHandler.init();
         CapabilityHandler.init();
 
+        loadClojure();
+
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener((FMLClientSetupEvent event) ->
                 Minecraft.getInstance().enqueue(() -> {
@@ -35,6 +41,21 @@ public class Tetraits {
                         }
                 )
         );
+    }
+
+    private void loadClojure() {
+        InputStream resource = getClass()
+                .getClassLoader()
+                .getResourceAsStream("clojure/tetraits.clj");
+
+        if(resource != null) {
+            try {
+                Clojure.var("clojure.core", "load-reader")
+                        .invoke(new InputStreamReader(resource));
+            } catch(RuntimeException e) {
+                LOGGER.error("Tetraits clojure init failed to load.", e);
+            }
+        }
     }
 
 }
