@@ -134,7 +134,6 @@ jar {
 
 shadowJar {
     configurations = [project.configurations.shade]
-    relocate 'clojure', "${project.group}.shade.clojure"
 }
 
 reobf {
