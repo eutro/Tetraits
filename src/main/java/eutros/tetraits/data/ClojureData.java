@@ -67,7 +67,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-        if(!FilenameUtils.getExtension(file.getFileName().toString()).equals("tetraits/clj")) {
+        if(!FilenameUtils.getExtension(file.getFileName().toString()).equals("clj")) {
             return FileVisitResult.CONTINUE;
         }
 
