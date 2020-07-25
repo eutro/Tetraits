@@ -32,8 +32,11 @@ public class ReloadCommand {
     private static int reloadServer(CommandContext<CommandSource> context) {
         context.getSource()
                 .sendFeedback(new TranslationTextComponent("tetraits.commands.reload.start.server")
-                        .applyTextStyle(TextFormatting.DARK_PURPLE), true);
-        DataManager.getInstance().load();
+                        .applyTextStyle(TextFormatting.LIGHT_PURPLE), true);
+        DataManager dm = DataManager.getInstance();
+        dm.LOGGER.record();
+        dm.load();
+        dm.LOGGER.forEach(component -> context.getSource().sendFeedback(component, false));
         context.getSource()
                 .sendFeedback(new TranslationTextComponent("tetraits.commands.reload.finished")
                         .applyTextStyle(TextFormatting.GREEN), true);
@@ -54,8 +57,11 @@ public class ReloadCommand {
         }
 
         player.sendMessage(new TranslationTextComponent("tetraits.commands.reload.start.client")
-                .applyTextStyle(TextFormatting.DARK_AQUA));
-        DataManager.getInstance().load();
+                .applyTextStyle(TextFormatting.BLUE));
+        DataManager dm = DataManager.getInstance();
+        dm.LOGGER.record();
+        dm.load();
+        dm.LOGGER.forEach(player::sendMessage);
         player.sendMessage(new TranslationTextComponent("tetraits.commands.reload.finished")
                 .applyTextStyle(TextFormatting.GREEN));
     }

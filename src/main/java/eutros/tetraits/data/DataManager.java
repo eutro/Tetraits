@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import eutros.tetraits.Tetraits;
 import eutros.tetraits.network.CustomPacket;
 import eutros.tetraits.util.FileHelper;
+import eutros.tetraits.util.TextComponentLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.profiler.IProfiler;
@@ -12,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
+import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,6 +24,8 @@ import java.nio.file.Files;
 import java.util.Optional;
 
 public class DataManager extends ReloadListener<Object> {
+
+    public final TextComponentLogger LOGGER = new TextComponentLogger(LogManager.getLogger());
 
     private static final ThreadLocal<DataManager> instance = ThreadLocal.withInitial(DataManager::new);
     private MinecraftServer server;

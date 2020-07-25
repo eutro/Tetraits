@@ -74,7 +74,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
         Path relative = getDataRoot().relativize(file);
 
         if(relative.getNameCount() < 2) {
-            Tetraits.LOGGER.warn("File: \"{}\" should be in a name-spaced subfolder!", file.toAbsolutePath());
+            DataManager.getInstance().LOGGER.warn("File: \"{}\" should be in a name-spaced subfolder!", file.toAbsolutePath());
             return FileVisitResult.CONTINUE;
         }
 
@@ -89,9 +89,9 @@ public abstract class ClojureData implements FileVisitor<Path> {
                     Object loaded = loadClass.invoke(file.toAbsolutePath().toString());
                     if(loaded instanceof IFn) {
                         data.put(rl, (IFn) loaded);
-                        Tetraits.LOGGER.debug("Loaded {}.", rl);
+                        DataManager.getInstance().LOGGER.debug("Loaded {}.", rl);
                     } else if(loaded != null) {
-                        Tetraits.LOGGER.error("{} didn't return IFn.", rl);
+                        DataManager.getInstance().LOGGER.error("{} didn't return IFn.", rl);
                     }
                 } catch(CompilerException compilerError) {
                     IPersistentMap data = compilerError.getData();
@@ -106,12 +106,12 @@ public abstract class ClojureData implements FileVisitor<Path> {
                                 .skip(compilerError.line - 1)
                                 .findFirst()
                                 .ifPresent(line -> {
-                                    error.append("==========================================================\n");
+                                    error.append("=====================================================\n");
                                     error.append(line);
                                     error.append('\n');
                                     error.append(new String(new char[column]).replace('\0', ' '));
                                     error.append("^ here\n");
-                                    error.append("==========================================================\n");
+                                    error.append("=====================================================\n");
                                 });
                         br.close();
                     } catch(IOException e) {
@@ -126,7 +126,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
                         cause = cause.getCause();
                     }
 
-                    Tetraits.LOGGER.error(error.toString(),
+                    DataManager.getInstance().LOGGER.error(error.toString(),
                             rl,
                             compilerError.line,
                             column,
@@ -134,7 +134,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
                 }
             } catch(RuntimeException e) {
                 // Clojure rethrows IOExceptions as such
-                Tetraits.LOGGER.error("Couldn't load file {}.", file, e);
+                DataManager.getInstance().LOGGER.error("Couldn't load file {}.", file, e);
             }
         });
 
@@ -143,7 +143,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) {
-        Tetraits.LOGGER.error("Failed to visit file.", exc);
+        DataManager.getInstance().LOGGER.error("Failed to visit file.", exc);
         return FileVisitResult.CONTINUE;
     }
 
