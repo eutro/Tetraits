@@ -51,7 +51,7 @@ public class Tetraits {
     private void loadClojure() {
         InputStream resource = getClass()
                 .getClassLoader()
-                .getResourceAsStream("clj/tetraits.clj");
+                .getResourceAsStream("tetraits/clj/tetraits.clj");
 
         if(resource != null) {
             try {

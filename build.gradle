@@ -48,9 +48,6 @@ minecraft {
                 tetraits {
                     source sourceSets.main
                 }
-                clojure {
-                    source sourceSets.main
-                }
             }
         }
 
@@ -65,9 +62,6 @@ minecraft {
 
             mods {
                 tetraits {
-                    source sourceSets.main
-                }
-                clojure {
                     source sourceSets.main
                 }
             }
@@ -86,9 +80,6 @@ minecraft {
 
             mods {
                 tetraits {
-                    source sourceSets.main
-                }
-                clojure {
                     source sourceSets.main
                 }
             }

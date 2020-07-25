@@ -3,7 +3,6 @@ package eutros.tetraits.data;
 import com.google.common.collect.ImmutableList;
 import eutros.tetraits.Tetraits;
 import eutros.tetraits.network.CustomPacket;
-import eutros.tetraits.util.FileHelper;
 import eutros.tetraits.util.TextComponentLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.ReloadListener;
@@ -19,9 +18,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Optional;
+import java.nio.file.Path;
 
 public class DataManager extends ReloadListener<Object> {
 
@@ -79,6 +78,17 @@ public class DataManager extends ReloadListener<Object> {
     public void apply(@Nullable Object obj, @Nonnull IResourceManager rm, @Nullable IProfiler profilerIn) {
     }
 
+    private static final String[] builtins = {
+            "capabilities/psi/equipment.clj",
+
+            "traits/botania/blade_beam.clj",
+            "traits/botania/mana_regen.clj",
+
+            "traits/psi/equipment.clj",
+            "traits/psi/sword.clj",
+            "traits/psi/tool.clj",
+    };
+
     private void loadDefaults() {
         File dir = getTetraitsDir();
         if(dir.exists()) {
@@ -93,19 +103,27 @@ public class DataManager extends ReloadListener<Object> {
             }
         }
 
-        if(dir.mkdir()) {
-            Optional.ofNullable(DataManager.class.getClassLoader())
-                    .map(cl -> cl.getResource("builtin"))
-                    .map(url -> {
-                        try {
-                            return url.toURI();
-                        } catch(URISyntaxException e) {
-                            return null;
-                        }
-                    })
-                    .map(File::new)
-                    .map(File::toPath)
-                    .ifPresent(resources -> FileHelper.copyAll(resources, dir.toPath()));
+        try {
+            ClassLoader cl = DataManager.class.getClassLoader();
+            for(String builtinResource : builtins) {
+                try(InputStream inputStream = cl.getResourceAsStream("tetraits/builtin/" + builtinResource)) {
+                    if(inputStream == null) {
+                        continue;
+                    }
+
+                    Path to = dir.toPath()
+                            .resolve(builtinResource.replace('/', File.separatorChar));
+
+                    File targetFolder = to.getParent().toFile();
+                    if(targetFolder.exists() || targetFolder.mkdirs()) {
+                        Files.copy(inputStream, to);
+                    } else {
+                        throw new IOException("Couldn't create folder: " + targetFolder);
+                    }
+                }
+            }
+        } catch(IOException | RuntimeException e) {
+            LOGGER.error("Couldn't copy files.", e);
         }
     }
 
