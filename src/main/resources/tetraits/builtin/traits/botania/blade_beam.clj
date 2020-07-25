@@ -1,19 +1,20 @@
 (ns traits.botania.blade_beam
-  (:import vazkii.botania.common.entity.EntityManaBurst
-           vazkii.botania.common.item.ModItems
-           vazkii.botania.common.item.equipment.tool.ToolCommons
-           net.minecraft.item.ItemStack
-           net.minecraftforge.fml.network.NetworkEvent$Context
-           (eutros.tetraits.clojure_api EntityHelper
-                                        VectorHelper
-                                        WorldHelper
-                                        ItemStackHelper
-                                        IPacketScheme
-                                        PacketHelper))
   (:use tetraits.core))
 
-(if-loaded
+(when-loaded
  "botania"
+ (import
+  vazkii.botania.common.entity.EntityManaBurst
+  vazkii.botania.common.item.ModItems
+  vazkii.botania.common.item.equipment.tool.ToolCommons
+  net.minecraft.item.ItemStack
+  net.minecraftforge.fml.network.NetworkEvent$Context
+  (eutros.tetraits.clojure_api EntityHelper
+                               VectorHelper
+                               WorldHelper
+                               ItemStackHelper
+                               IPacketScheme
+                               PacketHelper))
  (let [getBurst
        (fn [player]
          (let [burst          (EntityManaBurst. player)

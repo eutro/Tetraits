@@ -1,15 +1,16 @@
 (ns capabilities.psi.equipment
-  (:import vazkii.psi.api.PsiAPI
-           vazkii.psi.api.spell.ISpellAcceptor
-           (vazkii.psi.api.cad ISocketable
-                               IPsiBarDisplay)
-           net.minecraft.nbt.CompoundNBT
-           (eutros.tetraits.clojure_api ItemStackHelper
-                                        NBTHelper))
   (:use tetraits.core))
 
-(if-loaded
+(when-loaded
  "psi"
+ (import
+   vazkii.psi.api.PsiAPI
+   vazkii.psi.api.spell.ISpellAcceptor
+   (vazkii.psi.api.cad ISocketable
+                       IPsiBarDisplay)
+   net.minecraft.nbt.CompoundNBT
+   (eutros.tetraits.clojure_api ItemStackHelper
+                                NBTHelper))
  (fn [stack cap side cache slots]
    (if (nil? (cache))
      (let [gOCCompound (fn [] (ItemStackHelper/getOrCreateChildTag stack "tetraits:psi_tool"))]

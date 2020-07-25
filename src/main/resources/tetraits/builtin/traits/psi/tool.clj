@@ -1,9 +1,9 @@
 (ns traits.psi.tool
-  (:import vazkii.psi.common.item.tool.IPsimetalTool)
   (:use tetraits.core))
 
-(if-loaded
+(when-loaded
  "psi"
+ (import vazkii.psi.common.item.tool.IPsimetalTool)
  (let [pstool
        (reify
         IPsimetalTool)]

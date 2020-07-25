@@ -1,12 +1,13 @@
 (ns traits.psi.equipment
-  (:import vazkii.psi.common.item.tool.IPsimetalTool
-           net.minecraft.util.text.TranslationTextComponent
-           vazkii.psi.api.cad.ISocketable
-           java.util.List)
   (:use tetraits.core))
 
-(if-loaded
+(when-loaded
  "psi"
+ (import
+  vazkii.psi.common.item.tool.IPsimetalTool
+  net.minecraft.util.text.TranslationTextComponent
+  vazkii.psi.api.cad.ISocketable
+  java.util.List)
  (fn [evt [doRegen addTooltip]]
    (case evt
      "INVENTORY_TICK" (fn [stack world player slot isSelected]

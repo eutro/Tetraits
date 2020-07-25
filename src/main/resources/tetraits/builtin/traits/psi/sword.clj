@@ -1,17 +1,18 @@
 (ns traits.psi.sword
-  (:import vazkii.psi.api.PsiAPI
-           vazkii.psi.api.cad.ISocketable
-           vazkii.psi.common.item.tool.IPsimetalTool
-           vazkii.psi.common.item.ItemCAD
-           vazkii.psi.common.core.handler.PlayerDataHandler
-           net.minecraft.entity.player.PlayerEntity
-           java.util.function.Consumer
-           vazkii.psi.api.spell.SpellContext
-           eutros.tetraits.clojure_api.ItemStackHelper)
   (:use tetraits.core))
 
-(if-loaded
+(when-loaded
  "psi"
+ (import
+  vazkii.psi.api.PsiAPI
+  vazkii.psi.api.cad.ISocketable
+  vazkii.psi.common.item.tool.IPsimetalTool
+  vazkii.psi.common.item.ItemCAD
+  vazkii.psi.common.core.handler.PlayerDataHandler
+  net.minecraft.entity.player.PlayerEntity
+  java.util.function.Consumer
+  vazkii.psi.api.spell.SpellContext
+  eutros.tetraits.clojure_api.ItemStackHelper)
  (let [pstool
        (reify
         IPsimetalTool)]

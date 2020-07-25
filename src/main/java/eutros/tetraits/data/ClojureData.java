@@ -89,7 +89,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
                     Object loaded = loadClass.invoke(file.normalize().toString());
                     if(loaded instanceof IFn) {
                         data.put(rl, (IFn) loaded);
-                        DataManager.getInstance().LOGGER.debug("Loaded {}.", rl);
+                        DataManager.getInstance().LOGGER.info("Loaded {}.", rl);
                     } else if(loaded != null) {
                         DataManager.getInstance().LOGGER.error("{} didn't return IFn.", rl);
                     }
