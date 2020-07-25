@@ -1,4 +1,5 @@
 {
-  "tetraits.commands.reload.start": "Reloading traits and capabilities...",
+  "tetraits.commands.reload.start.client": "Reloading client traits and capabilities...",
+  "tetraits.commands.reload.start.server": "Reloading server traits and capabilities...",
   "tetraits.commands.reload.finished": "Reload complete!"
 }
