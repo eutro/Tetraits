@@ -51,7 +51,7 @@ public class Tetraits {
     private void loadClojure() {
         InputStream resource = getClass()
                 .getClassLoader()
-                .getResourceAsStream("clojure/tetraits.clj");
+                .getResourceAsStream("clj/tetraits.clj");
 
         if(resource != null) {
             try {

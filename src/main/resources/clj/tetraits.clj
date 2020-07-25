@@ -32,9 +32,17 @@
 (defmacro if-loaded
   "Checks if the mod is loaded. If it is,
   evaluates and returns then expr,
-  otherwise else expr, if supplied, else nil."
+  otherwise else expr, if supplied, else nil.
+
+  The check is done when the macro is expanded,
+  to avoid compile errors if the mod is not present."
   ([modid then] `(if-loaded ~modid ~then nil))
   ([modid then else]
-   `(if (is-loaded ~modid)
-     ~then
-     ~else)))
+   (if (is-loaded modid)
+     then
+     else)))
+
+(defmacro when-loaded
+  "Like if-loaded, but with an implicit do and no else clause."
+  [modid & body]
+  (list 'if-loaded modid (cons 'do body)))
