@@ -1,6 +1,8 @@
 package eutros.tetraits;
 
 import clojure.java.api.Clojure;
+import eutros.tetraits.command.CommandHandler;
+import eutros.tetraits.command.ReloadCommand;
 import eutros.tetraits.data.DataManager;
 import eutros.tetraits.handler.CapabilityHandler;
 import eutros.tetraits.handler.TraitHandler;
@@ -29,17 +31,20 @@ public class Tetraits {
         PacketHandler.init();
         TraitHandler.init();
         CapabilityHandler.init();
+        CommandHandler.init();
 
         loadClojure();
 
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        modBus.addListener((FMLClientSetupEvent event) ->
-                Minecraft.getInstance().enqueue(() -> {
-                            DataManager dm = DataManager.getInstance();
-                            MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggedInEvent evt) ->
-                                    new Thread(dm::load).start());
-                        }
-                )
+        modBus.addListener((FMLClientSetupEvent event) -> {
+                    Minecraft.getInstance().enqueue(() -> {
+                                DataManager dm = DataManager.getInstance();
+                                MinecraftForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggedInEvent evt) ->
+                                        new Thread(dm::load).start());
+                            }
+                    );
+                    MinecraftForge.EVENT_BUS.addListener(ReloadCommand::clientSend);
+                }
         );
     }
 
