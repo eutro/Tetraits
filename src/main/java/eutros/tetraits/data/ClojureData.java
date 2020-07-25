@@ -74,7 +74,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
         Path relative = getDataRoot().relativize(file);
 
         if(relative.getNameCount() < 2) {
-            DataManager.getInstance().LOGGER.warn("File: \"{}\" should be in a name-spaced subfolder!", file.toAbsolutePath());
+            DataManager.getInstance().LOGGER.warn("File: \"{}\" should be in a name-spaced subfolder!", file.normalize());
             return FileVisitResult.CONTINUE;
         }
 
@@ -86,7 +86,7 @@ public abstract class ClojureData implements FileVisitor<Path> {
         getExecutor().runImmediately(() -> {
             try {
                 try {
-                    Object loaded = loadClass.invoke(file.toAbsolutePath().toString());
+                    Object loaded = loadClass.invoke(file.normalize().toString());
                     if(loaded instanceof IFn) {
                         data.put(rl, (IFn) loaded);
                         DataManager.getInstance().LOGGER.debug("Loaded {}.", rl);
