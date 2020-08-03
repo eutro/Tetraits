@@ -4,11 +4,11 @@ import com.google.common.collect.ImmutableList;
 import eutros.tetraits.Tetraits;
 import eutros.tetraits.network.CustomPacket;
 import eutros.tetraits.util.TextComponentLogger;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
@@ -61,9 +61,8 @@ public class DataManager extends ReloadListener<Object> {
     }
 
     private File getTetraitsDir() {
-        return new File((server == null ?
-                         Minecraft.getInstance().gameDir :
-                         server.getDataDirectory()),
+        return new File(DistExecutor.safeRunForDist(() -> ClientHelper::gameDir,
+						    () -> server::getDataDirectory),
                 Tetraits.MOD_ID);
     }
 
