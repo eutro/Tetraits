@@ -13,8 +13,7 @@
      "INVENTORY_TICK" (fn [stack world player slot isSelected]
                         (if doRegen
                           (IPsimetalTool/regen stack
-                                               player
-                                               isSelected)))
+                                               player)))
      "TOOLTIP"        (fn [stack world player flags ^List tooltip]
                         (if addTooltip
                           (.add tooltip
