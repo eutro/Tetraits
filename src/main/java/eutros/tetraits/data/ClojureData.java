@@ -5,10 +5,10 @@ import clojure.lang.Compiler.CompilerException;
 import clojure.lang.IFn;
 import clojure.lang.IPersistentMap;
 import eutros.tetraits.Tetraits;
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.concurrent.ThreadTaskExecutor;
+import net.minecraftforge.fml.DistExecutor;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.Nullable;
@@ -46,9 +46,8 @@ public abstract class ClojureData implements FileVisitor<Path> {
     }
 
     protected Path getDataRoot() {
-        return (server == null ?
-                Minecraft.getInstance().gameDir :
-                server.getDataDirectory())
+        return DistExecutor.safeRunForDist(() -> ClientHelper::gameDir,
+					   () -> server::getDataDirectory)
                 .toPath()
                 .resolve(Tetraits.MOD_ID)
                 .resolve(getPath());
@@ -155,8 +154,16 @@ public abstract class ClojureData implements FileVisitor<Path> {
     @Nullable
     public MinecraftServer server;
 
+    @Nullable
+    public MinecraftServer getServer() {
+	return server;
+    }
+    
     protected ThreadTaskExecutor<? extends Runnable> getExecutor() {
-        return server == null ? Minecraft.getInstance() : server;
+        return DistExecutor.unsafeRunForDist(server == null ?
+			        	     () -> ClientHelper::getExecutor :
+					     () -> this::getServer,
+					     () -> this::getServer);
     }
 
 }
