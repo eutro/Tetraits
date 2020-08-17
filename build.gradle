@@ -11,7 +11,6 @@ buildscript {
 
 plugins {
     id "com.wynprice.cursemaven" version "2.1.5"
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -23,11 +22,6 @@ group = 'eutros.tetraits'
 archivesBaseName = 'tetraits'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-
-configurations {
-    shade
-    implementation.extendsFrom(shade)
-}
 
 minecraft {
     mappings channel: 'snapshot', version: '20200514-1.15.1'
@@ -103,7 +97,7 @@ dependencies {
     implementation fg.deobf("curse.maven:tetra:${tetra_file}") // please
     runtimeOnly fg.deobf("curse.maven:mgui:${mgui_file}")
 
-    shade 'org.clojure:clojure:1.10.1'
+    implementation 'org.clojure:clojure:1.10.1'
 
     runtimeOnly fg.deobf('vazkii.botania:Botania:r1.15-388.458')
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_ver}-1.2-35.186")
@@ -112,22 +106,3 @@ dependencies {
     runtimeOnly fg.deobf('vazkii.psi:Psi:r1.2-82.237')
     runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-41.80')
 }
-
-jar {
-    configurations.shade.each { dep ->
-        from(project.zipTree(dep)) {
-            exclude 'META-INF', 'META-INF/**'
-        }
-    }
-}
-
-shadowJar {
-    configurations = [project.configurations.shade]
-}
-
-reobf {
-    shadowJar {}
-}
-
-build.dependsOn shadowJar
-build.dependsOn reobfShadowJar
