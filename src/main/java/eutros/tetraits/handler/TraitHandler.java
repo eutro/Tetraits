@@ -260,7 +260,7 @@ public class TraitHandler {
                 ItemStack.class,    // stack
                 World.class,        // world
                 PlayerEntity.class, // player
-                ITooltipFlag.class, // flags
+//              ITooltipFlag.class, // flags
                 List.class          // tooltip (ITextComponent)
         );
 
