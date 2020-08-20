@@ -52,6 +52,8 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
+	    args 'nogui'
+
             mods {
                 tetraits {
                     source sourceSets.main
