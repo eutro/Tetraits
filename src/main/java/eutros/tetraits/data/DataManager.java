@@ -84,6 +84,7 @@ public class DataManager extends ReloadListener<Object> {
             "traits/botania/mana_regen.clj",
 
             "traits/psi/equipment.clj",
+            "traits/psi/regen.clj",
             "traits/psi/sword.clj",
             "traits/psi/tool.clj",
     };

@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class ClojureData implements FileVisitor<Path> {
 
@@ -46,8 +47,10 @@ public abstract class ClojureData implements FileVisitor<Path> {
     }
 
     protected Path getDataRoot() {
-        return DistExecutor.safeRunForDist(() -> ClientHelper::gameDir,
-					   () -> server::getDataDirectory)
+        return DistExecutor.unsafeRunForDist(
+                () -> ClientHelper::gameDir,
+                () -> Objects.requireNonNull(server)::getDataDirectory
+        )
                 .toPath()
                 .resolve(Tetraits.MOD_ID)
                 .resolve(getPath());
@@ -154,16 +157,12 @@ public abstract class ClojureData implements FileVisitor<Path> {
     @Nullable
     public MinecraftServer server;
 
-    @Nullable
-    public MinecraftServer getServer() {
-	return server;
-    }
-    
     protected ThreadTaskExecutor<? extends Runnable> getExecutor() {
-        return DistExecutor.unsafeRunForDist(server == null ?
-			        	     () -> ClientHelper::getExecutor :
-					     () -> this::getServer,
-					     () -> this::getServer);
+        return DistExecutor.unsafeRunForDist(
+                () -> server == null ?
+                      ClientHelper::getExecutor :
+                      () -> server,
+                () -> () -> server);
     }
 
 }
