@@ -1,0 +1,5 @@
+{
+  "tetraits.commands.reload.start.client": "Перезагрузка клиентских качеств и возможностей ...",
+  "tetraits.commands.reload.start.server": "Перезагрузка характеристик и возможностей сервера ...",
+  "tetraits.commands.reload.finished": "Перезагрузка!"
+}
