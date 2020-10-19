@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+[[mods]]
+modId="tetrapsi"
+version="${file.jarVersion}"
+displayName="Tetrapsi"
+authors="Eutros"
+description='''Psi Tetra tools!'''
+[[dependencies.tetrapsi]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.tetrapsi]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.tetrapsi]]
+    modId="tetra"
+    mandatory=true
+    versionRange="[1.15.2-2.12,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.tetrapsi]]
+    modId="tetraits"
+    mandatory=true
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,56 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "com.wynprice.cursemaven"
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'maven-publish'
+
+dependencies {
+    implementation rootProject
+}
+
+minecraft {
+    runs {
+        client {
+            mods {
+                tetrapsi {
+                    source sourceSets.main
+                }
+                tetraits {
+                    source rootProject.sourceSets.main
+                }
+            }
+        }
+        server {
+            mods {
+                tetrapsi {
+                    source sourceSets.main
+                }
+                tetraits {
+                    source rootProject.sourceSets.main
+                }
+            }
+        }
+        data {
+            args '--mod', 'tetrapsi',
+                    '--all',
+                    '--output', file('src/generated/resources/')
+            mods {
+                tetrapsi {
+                    source sourceSets.main
+                }
+                tetraits {
+                    source rootProject.sourceSets.main
+                }
+            }
+        }
+    }
+}

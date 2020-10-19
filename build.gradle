@@ -24,54 +24,25 @@ archivesBaseName = 'tetraits'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200514-1.15.1'
-
     runs {
         client {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
             mods {
                 tetraits {
                     source sourceSets.main
                 }
             }
         }
-
         server {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-	    args 'nogui'
-
             mods {
                 tetraits {
                     source sourceSets.main
                 }
             }
         }
-
         data {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'tetraits', '--all', '--output', file('src/generated/resources/')
-
+            args '--mod', 'tetraits',
+                    '--all',
+                    '--output', file('src/generated/resources/')
             mods {
                 tetraits {
                     source sourceSets.main
@@ -81,30 +52,56 @@ minecraft {
     }
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        name = 'Jared'
-        url = 'https://maven.blamejared.com'
+allprojects {
+
+    apply plugin: 'net.minecraftforge.gradle'
+
+    minecraft {
+        mappings channel: 'snapshot', version: '20200514-1.15.1'
+
+        runs {
+            client {
+                workingDirectory project.file('run')
+                property 'forge.logging.console.level', 'debug'
+            }
+
+            server {
+                workingDirectory project.file('run')
+                property 'forge.logging.console.level', 'debug'
+            }
+
+            data {
+                workingDirectory project.file('run')
+                property 'forge.logging.console.level', 'debug'
+            }
+        }
     }
-    maven {
-        name = "C4"
-        url = "https://maven.theillusivec4.top/"
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'Jared'
+            url = 'https://maven.blamejared.com'
+        }
+        maven {
+            name = "C4"
+            url = "https://maven.theillusivec4.top/"
+        }
     }
-}
 
-dependencies {
-    minecraft "net.minecraftforge:forge:${mc_ver}-${forge_ver}"
+    dependencies {
+        minecraft "net.minecraftforge:forge:${mc_ver}-${forge_ver}"
 
-    implementation fg.deobf("curse.maven:tetra:${tetra_file}") // please
-    runtimeOnly fg.deobf("curse.maven:mgui:${mgui_file}")
+        implementation fg.deobf("curse.maven:tetra:${tetra_file}") // please
+        runtimeOnly fg.deobf("curse.maven:mgui:${mgui_file}")
 
-    implementation 'org.clojure:clojure:1.10.1'
+        implementation 'org.clojure:clojure:1.10.1'
 
-    runtimeOnly fg.deobf('vazkii.botania:Botania:r1.15-388.458')
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_ver}-1.2-35.186")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-${mc_ver}-2.0")
+        runtimeOnly fg.deobf('vazkii.botania:Botania:r1.15-388.458')
+        runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_ver}-1.2-35.186")
+        runtimeOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-${mc_ver}-2.0")
 
-    runtimeOnly fg.deobf('vazkii.psi:Psi:r1.2-83.247')
-    runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-41.80')
+        runtimeOnly fg.deobf('vazkii.psi:Psi:r1.2-83.247')
+        runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-41.80')
+    }
 }
