@@ -1,0 +1,5 @@
+{
+  "tetraits.commands.reload.start.client": "Client Eigenschaften und Fähigkeiten nur geladen...",
+  "tetraits.commands.reload.start.server": "Server Eigenschaften und Fähigkeiten nur geladen...",
+  "tetraits.commands.reload.finished": "Neuladen beendet!"
+}
