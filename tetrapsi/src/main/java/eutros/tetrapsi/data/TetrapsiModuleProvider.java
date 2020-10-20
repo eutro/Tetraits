@@ -13,7 +13,9 @@ import se.mickelus.tetra.module.data.ModuleVariantData;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 
-public class TetrapsiModuleProvider extends ModuleDataProvider {
+import static eutros.tetrapsi.data.ITetrapsiDataProvider.*;
+
+public class TetrapsiModuleProvider extends ModuleDataProvider implements ITetrapsiDataProvider {
 
     public static final ResourceLocation PSI_EQIPMENT = psi("equipment");
     public static final ResourceLocation PSI_REGEN = psi("regen");
@@ -21,18 +23,6 @@ public class TetrapsiModuleProvider extends ModuleDataProvider {
 
     public TetrapsiModuleProvider(DataGenerator gen) {
         super(gen);
-    }
-
-    private static String join(String a, String b) {
-        return a + "/" + b;
-    }
-
-    private static ResourceLocation tetra(String path) {
-        return new ResourceLocation("tetra", path);
-    }
-
-    private static ResourceLocation psi(String path) {
-        return new ResourceLocation("psi", path);
     }
 
     private static final IKey<String> NAME = IKey.of(String.class, "NAME");

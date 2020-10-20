@@ -93,15 +93,15 @@ allprojects {
         minecraft "net.minecraftforge:forge:${mc_ver}-${forge_ver}"
 
         implementation fg.deobf("curse.maven:tetra:${tetra_file}") // please
-        runtimeOnly fg.deobf("curse.maven:mgui:${mgui_file}")
+        implementation fg.deobf("curse.maven:mgui:${mgui_file}")
 
         implementation 'org.clojure:clojure:1.10.1'
 
-        runtimeOnly fg.deobf('vazkii.botania:Botania:r1.15-388.458')
-        runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${mc_ver}-1.2-35.186")
-        runtimeOnly fg.deobf("top.theillusivec4.curios:curios:FORGE-${mc_ver}-2.0")
+        implementation fg.deobf('vazkii.botania:Botania:r1.15-388.458')
+        implementation fg.deobf("vazkii.patchouli:Patchouli:${mc_ver}-1.2-35.186")
+        implementation fg.deobf("top.theillusivec4.curios:curios:FORGE-${mc_ver}-2.0")
 
-        runtimeOnly fg.deobf('vazkii.psi:Psi:r1.2-83.247')
-        runtimeOnly fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-41.80')
+        implementation fg.deobf('vazkii.psi:Psi:r1.2-83.247')
+        implementation fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-41.80')
     }
 }

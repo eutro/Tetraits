@@ -8,6 +8,7 @@ public class TetrapsiDataGen {
     public static void onGatherData(GatherDataEvent evt) {
         DataGenerator gen = evt.getGenerator();
         gen.addProvider(new TetrapsiModuleProvider(gen));
+        gen.addProvider(new TetrapsiSchemaProvider(gen));
     }
 
 }
