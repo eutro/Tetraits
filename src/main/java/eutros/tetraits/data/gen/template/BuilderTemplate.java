@@ -39,12 +39,20 @@ public interface BuilderTemplate<T> {
 
 
         public <T> BuilderTemplate<T> build(Function<Pattern, B> starter, Function<Pattern, Function<B, T>> finisher) {
-            return pattern -> {
-                B b = starter.apply(pattern);
-                for(Function<Pattern, Function<B, B>> handler : handlers) {
-                    b = handler.apply(pattern).apply(b);
+            return new BuilderTemplate<T>() {
+                @Override
+                public T apply(Pattern pattern) {
+                    B b = starter.apply(pattern);
+                    for(Function<Pattern, Function<B, B>> handler : handlers) {
+                        b = handler.apply(pattern).apply(b);
+                    }
+                    return finisher.apply(pattern).apply(b);
                 }
-                return finisher.apply(pattern).apply(b);
+
+                @Override
+                public String toString() {
+                    return handlers.toString();
+                }
             };
         }
 

@@ -1,25 +1,25 @@
 {
   "variants": [
     {
-      "key": "basic_pickaxe/psimetal",
-      "attackSpeed": 7.8,
+      "key": "basic_hammer/psimetal",
+      "attackSpeed": 5.46,
       "durability": 900,
       "integrity": -3,
       "effects": {},
       "glyph": {
         "tint": "d2c8f1",
-        "textureX": 176
+        "textureX": 64
       },
       "capabilities": {
-        "pickaxe": [
+        "hammer": [
           3,
-          7.8
+          5.46
         ]
       },
       "models": [
         {
           "tint": "d2c8f1",
-          "location": "tetra:items/module/double/head/basic_pickaxe/metal"
+          "location": "tetra:items/module/double/head/basic_hammer/metal"
         }
       ],
       "magicCapacity": 12,
@@ -35,25 +35,25 @@
       }
     },
     {
-      "key": "basic_pickaxe/ebony_psimetal",
-      "attackSpeed": 8.3,
+      "key": "basic_hammer/ebony_psimetal",
+      "attackSpeed": 5.81,
       "durability": 1200,
       "integrity": -4,
       "effects": {},
       "glyph": {
         "tint": "201f1f",
-        "textureX": 176
+        "textureX": 64
       },
       "capabilities": {
-        "pickaxe": [
+        "hammer": [
           4,
-          8.3
+          5.81
         ]
       },
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/head/basic_pickaxe/metal"
+          "location": "tetra:items/module/double/head/basic_hammer/metal"
         }
       ],
       "magicCapacity": 15,
@@ -69,25 +69,25 @@
       }
     },
     {
-      "key": "basic_pickaxe/ivory_psimetal",
-      "attackSpeed": 8.8,
+      "key": "basic_hammer/ivory_psimetal",
+      "attackSpeed": 6.16,
       "durability": 1110,
       "integrity": -4,
       "effects": {},
       "glyph": {
         "tint": "201f1f",
-        "textureX": 176
+        "textureX": 64
       },
       "capabilities": {
-        "pickaxe": [
+        "hammer": [
           4,
-          8.8
+          6.16
         ]
       },
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/head/basic_pickaxe/metal"
+          "location": "tetra:items/module/double/head/basic_hammer/metal"
         }
       ],
       "magicCapacity": 18,

@@ -73,11 +73,11 @@ public abstract class TetraDataProvider<T> implements IDataProvider {
                     .resolve(loc.getNamespace())
                     .resolve(getPath())
                     .resolve(loc.getPath() + ".json");
-
+            cache.addProtectedPath(outputPath);
             outputPath.getParent().toFile().mkdirs();
             try(final FileWriter fr = new FileWriter(outputPath.toFile());
                 final BufferedWriter br = new BufferedWriter(fr);
-                final JsonWriter jr = new JsonWriter(br)) {
+                final JsonWriter jr = gson.newJsonWriter(br)) {
                 gson.toJson(t, t.getClass(), jr);
             }
         });

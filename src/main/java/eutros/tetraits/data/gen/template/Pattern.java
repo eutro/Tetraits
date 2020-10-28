@@ -19,7 +19,7 @@ public class Pattern {
     }
 
     public <T> T get(IKey<T> key) {
-        if(!properties.containsKey(key)) throw new NoSuchElementException(key.toString());
+        if(!properties.containsKey(key)) throw new NoSuchElementException(key + " in " + this);
         return key.valClass().cast(properties.get(key));
     }
 
@@ -73,7 +73,7 @@ public class Pattern {
         }
 
         @SuppressWarnings("unchecked")
-        static <T, C> IKey<T> ofUnchecked(Class<C> valClass, String name) {
+        static <T extends C, C> IKey<T> ofUnchecked(Class<C> valClass, String name) {
             return (IKey<T>) of(valClass, name);
         }
 
