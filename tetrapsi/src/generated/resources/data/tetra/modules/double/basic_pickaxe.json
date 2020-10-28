@@ -1,0 +1,109 @@
+{
+  "variants": [
+    {
+      "key": "basic_pickaxe/psimetal",
+      "damage": 2.0,
+      "attackSpeed": -0.5999999,
+      "durability": 900,
+      "integrity": -3,
+      "effects": {},
+      "glyph": {
+        "tint": "d2c8f1",
+        "textureX": 176
+      },
+      "capabilities": {
+        "pickaxe": [
+          3,
+          7.8
+        ]
+      },
+      "models": [
+        {
+          "tint": "d2c8f1",
+          "location": "tetra:items/module/double/head/basic_pickaxe/metal"
+        }
+      ],
+      "magicCapacity": 12,
+      "tetraits": {
+        "capabilities": {
+          "psi:equipment": 4
+        },
+        "traits": {
+          "psi:equipment": true,
+          "psi:tool": true,
+          "psi:regen": true
+        }
+      }
+    },
+    {
+      "key": "basic_pickaxe/ebony_psimetal",
+      "damage": 3.5,
+      "attackSpeed": -0.3499999,
+      "durability": 1200,
+      "integrity": -4,
+      "effects": {},
+      "glyph": {
+        "tint": "201f1f",
+        "textureX": 176
+      },
+      "capabilities": {
+        "pickaxe": [
+          4,
+          8.3
+        ]
+      },
+      "models": [
+        {
+          "tint": "201f1f",
+          "location": "tetra:items/module/double/head/basic_pickaxe/metal"
+        }
+      ],
+      "magicCapacity": 15,
+      "tetraits": {
+        "capabilities": {
+          "psi:equipment": 5
+        },
+        "traits": {
+          "psi:equipment": true,
+          "psi:tool": true,
+          "psi:regen": true
+        }
+      }
+    },
+    {
+      "key": "basic_pickaxe/ivory_psimetal",
+      "damage": 3.0,
+      "attackSpeed": -0.099999905,
+      "durability": 1110,
+      "integrity": -4,
+      "effects": {},
+      "glyph": {
+        "tint": "201f1f",
+        "textureX": 176
+      },
+      "capabilities": {
+        "pickaxe": [
+          4,
+          8.8
+        ]
+      },
+      "models": [
+        {
+          "tint": "201f1f",
+          "location": "tetra:items/module/double/head/basic_pickaxe/metal"
+        }
+      ],
+      "magicCapacity": 18,
+      "tetraits": {
+        "capabilities": {
+          "psi:equipment": 6
+        },
+        "traits": {
+          "psi:equipment": true,
+          "psi:tool": true,
+          "psi:regen": true
+        }
+      }
+    }
+  ]
+}
