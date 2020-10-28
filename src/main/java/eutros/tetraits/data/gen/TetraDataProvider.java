@@ -14,8 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import se.mickelus.tetra.module.data.EnumTierData;
 
 import javax.annotation.Nullable;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -70,16 +68,11 @@ public abstract class TetraDataProvider<T> implements IDataProvider {
     public void act(DirectoryCache cache) throws IOException {
         collectData((loc, t) -> {
             Path outputPath = generator.getOutputFolder()
+                    .resolve("data")
                     .resolve(loc.getNamespace())
                     .resolve(getPath())
                     .resolve(loc.getPath() + ".json");
-            cache.addProtectedPath(outputPath);
-            outputPath.getParent().toFile().mkdirs();
-            try(final FileWriter fr = new FileWriter(outputPath.toFile());
-                final BufferedWriter br = new BufferedWriter(fr);
-                final JsonWriter jr = gson.newJsonWriter(br)) {
-                gson.toJson(t, t.getClass(), jr);
-            }
+            IDataProvider.save(gson, cache, gson.toJsonTree(t), outputPath);
         });
     }
 

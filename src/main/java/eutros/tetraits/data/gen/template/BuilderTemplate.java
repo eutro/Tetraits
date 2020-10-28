@@ -10,6 +10,7 @@ public interface BuilderTemplate<T> {
     class TemplateBuilder<B> {
 
         private final LinkedList<Function<Pattern, Function<B, B>>> handlers;
+        private Function<Pattern, B> starter;
 
         private TemplateBuilder() {
             handlers = new LinkedList<>();
@@ -26,6 +27,7 @@ public interface BuilderTemplate<T> {
 
         private TemplateBuilder(TemplateBuilder<B> other) {
             this.handlers = new LinkedList<>(other.handlers);
+            this.starter = other.starter;
         }
 
         public TemplateBuilder<B> handle(Function<Pattern, Function<B, B>> handler) {
@@ -37,8 +39,13 @@ public interface BuilderTemplate<T> {
             return new TemplateBuilder<>(this);
         }
 
+        public TemplateBuilder<B> starter(Function<Pattern, B> starter) {
+            this.starter = starter;
+            return this;
+        }
 
-        public <T> BuilderTemplate<T> build(Function<Pattern, B> starter, Function<Pattern, Function<B, T>> finisher) {
+        public <T> BuilderTemplate<T> build(Function<B, T> finisher) {
+            if(starter == null) throw new IllegalArgumentException("Starter not supplied!");
             return new BuilderTemplate<T>() {
                 @Override
                 public T apply(Pattern pattern) {
@@ -46,7 +53,7 @@ public interface BuilderTemplate<T> {
                     for(Function<Pattern, Function<B, B>> handler : handlers) {
                         b = handler.apply(pattern).apply(b);
                     }
-                    return finisher.apply(pattern).apply(b);
+                    return finisher.apply(b);
                 }
 
                 @Override

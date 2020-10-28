@@ -14,8 +14,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.function.Function;
 
-import static eutros.tetrapsi.data.ITetrapsiDataProvider.join;
-import static eutros.tetrapsi.data.ITetrapsiDataProvider.tetra;
+import static eutros.tetrapsi.data.ITetrapsiDataProvider.*;
 
 public class TetrapsiSchemaProvider extends SchemaDataProvider implements ITetrapsiDataProvider {
 
@@ -43,8 +42,8 @@ public class TetrapsiSchemaProvider extends SchemaDataProvider implements ITetra
                                 .moduleVariant(join(schema.get(MODULE_TYPE_KEY), p.get(NAME)))
                                 .moduleKey(schema.get(MODULE_KEY));
                     })
-                    .build(p -> OutcomeBuilder.create(),
-                            p -> OutcomeBuilder::build);
+                    .starter(p -> OutcomeBuilder.create())
+                    .build(OutcomeBuilder::build);
 
     private static final BuilderTemplate<SchemaDefinition> SCHEMA_TEMPLATE =
             BuilderTemplate.TemplateBuilder.<SchemaBuilder>create()
@@ -52,8 +51,8 @@ public class TetrapsiSchemaProvider extends SchemaDataProvider implements ITetra
                             .outcome(OUTCOME_TEMPLATE.apply(PSIMETAL.copy().property(SCHEMA_PATTERN, p)))
                             .outcome(OUTCOME_TEMPLATE.apply(EBONY.copy().property(SCHEMA_PATTERN, p)))
                             .outcome(OUTCOME_TEMPLATE.apply(IVORY.copy().property(SCHEMA_PATTERN, p))))
-                    .build(p -> SchemaBuilder.create(),
-                            p -> SchemaBuilder::build);
+                    .starter(p -> SchemaBuilder.create())
+                    .build(SchemaBuilder::build);
 
     @Override
     protected void collectData(@Nonnull DataConsumer<SchemaDefinition> consumer) throws IOException {

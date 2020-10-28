@@ -104,4 +104,8 @@ allprojects {
         implementation fg.deobf('vazkii.psi:Psi:r1.2-83.247')
         implementation fg.deobf('vazkii.autoreglib:AutoRegLib:1.5-41.80')
     }
+
+    sourceSets.main.resources {
+        srcDir 'src/generated/resources'
+    }
 }

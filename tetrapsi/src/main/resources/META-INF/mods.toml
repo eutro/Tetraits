@@ -26,6 +26,6 @@ description='''Psi Tetra tools!'''
     side="BOTH"
 [[dependencies.tetrapsi]]
     modId="tetraits"
-    mandatory=true
+    mandatory=false
     ordering="NONE"
     side="BOTH"
