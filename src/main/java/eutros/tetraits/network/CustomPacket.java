@@ -33,7 +33,7 @@ public class CustomPacket {
 
     public static void putScheme(String key, IPacketScheme scheme) {
         if(getSchemeMap().containsKey(key)) {
-            throw new IllegalStateException(String.format("Key: \"%s\" registered more than once.", key));
+            throw new IllegalArgumentException(String.format("Key: \"%s\" registered more than once.", key));
         }
         getSchemeMap().put(key, scheme);
     }

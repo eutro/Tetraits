@@ -25,7 +25,7 @@ public class ASMFieldHandler {
     // fallback reflection stuff
 
     private static <T> T throwException(Throwable t) {
-        throw new IllegalStateException("Could not get Tetraits field.", t);
+        throw new RuntimeException("Could not get Tetraits field.", t);
     }
 
     private static boolean logged = false;

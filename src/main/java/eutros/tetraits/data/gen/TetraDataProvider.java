@@ -50,7 +50,7 @@ public abstract class TetraDataProvider<T> implements IDataProvider {
 
                         @Override
                         public EnumTierData<?> read(JsonReader in) {
-                            throw new IllegalStateException();
+                            throw new UnsupportedOperationException();
                         }
                     };
                 }
@@ -116,7 +116,7 @@ public abstract class TetraDataProvider<T> implements IDataProvider {
             try {
                 return new EnumDataBuilder<>(clazz.newInstance());
             } catch(InstantiationException | IllegalAccessException e) {
-                throw new IllegalStateException(e);
+                throw new RuntimeException(e);
             }
         }
 

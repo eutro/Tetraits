@@ -113,7 +113,7 @@ public abstract class ModuleDataProvider extends TetraDataProvider<ModuleData> {
         }
         if(!foundKey) {
             if(tint > 0xFFFFFF || tint < 0) {
-                throw new IllegalStateException("tint out of range!");
+                throw new IllegalArgumentException("tint out of range!");
             }
             String tintString = Integer.toString(tint, 16);
             obj.addProperty(
@@ -309,7 +309,7 @@ public abstract class ModuleDataProvider extends TetraDataProvider<ModuleData> {
         public ModuleVariantBuilder trait(ResourceLocation location,
                                           Object data) {
             Object traits = getTetraits().computeIfAbsent("traits", s -> new HashMap<>());
-            if(!(traits instanceof Map)) throw new IllegalStateException("tetraits.traits is not a map!");
+            if(!(traits instanceof Map)) throw new RuntimeException("tetraits.traits is not a map!");
             @SuppressWarnings("unchecked")
             Map<Object, Object> map = (Map<Object, Object>) traits;
 
@@ -320,7 +320,7 @@ public abstract class ModuleDataProvider extends TetraDataProvider<ModuleData> {
         public ModuleVariantBuilder capability(ResourceLocation location,
                                                Object data) {
             Object traits = getTetraits().computeIfAbsent("capabilities", s -> new HashMap<>());
-            if(!(traits instanceof Map)) throw new IllegalStateException("tetraits.capabilities is not a map!");
+            if(!(traits instanceof Map)) throw new RuntimeException("tetraits.capabilities is not a map!");
             @SuppressWarnings("unchecked")
             Map<Object, Object> map = (Map<Object, Object>) traits;
 
