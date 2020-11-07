@@ -1,9 +1,9 @@
 {
   "variants": [
     {
-      "key": "basic_hammer/psimetal",
+      "key": "double/basic_hammer/psimetal",
       "damage": 3.0,
-      "attackSpeed": -1.1999998,
+      "attackSpeed": 7.8,
       "durability": 900,
       "integrity": -3,
       "effects": {},
@@ -36,9 +36,9 @@
       }
     },
     {
-      "key": "basic_hammer/ebony_psimetal",
+      "key": "double/basic_hammer/ebony_psimetal",
       "damage": 4.5,
-      "attackSpeed": -0.6999998,
+      "attackSpeed": 8.3,
       "durability": 1200,
       "integrity": -4,
       "effects": {},
@@ -71,9 +71,9 @@
       }
     },
     {
-      "key": "basic_hammer/ivory_psimetal",
+      "key": "double/basic_hammer/ivory_psimetal",
       "damage": 4.0,
-      "attackSpeed": -0.19999981,
+      "attackSpeed": 8.8,
       "durability": 1110,
       "integrity": -4,
       "effects": {},

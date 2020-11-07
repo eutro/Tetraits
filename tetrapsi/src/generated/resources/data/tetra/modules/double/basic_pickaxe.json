@@ -1,15 +1,15 @@
 {
   "variants": [
     {
-      "key": "basic_pickaxe/psimetal",
+      "key": "double/basic_pickaxe/psimetal",
       "damage": 2.0,
-      "attackSpeed": -0.5999999,
+      "attackSpeed": -5.1,
       "durability": 900,
       "integrity": -3,
       "effects": {},
       "glyph": {
         "tint": "d2c8f1",
-        "textureX": 176
+        "textureX": 32
       },
       "capabilities": {
         "pickaxe": [
@@ -36,15 +36,15 @@
       }
     },
     {
-      "key": "basic_pickaxe/ebony_psimetal",
+      "key": "double/basic_pickaxe/ebony_psimetal",
       "damage": 3.5,
-      "attackSpeed": -0.3499999,
+      "attackSpeed": -4.85,
       "durability": 1200,
       "integrity": -4,
       "effects": {},
       "glyph": {
         "tint": "201f1f",
-        "textureX": 176
+        "textureX": 32
       },
       "capabilities": {
         "pickaxe": [
@@ -71,15 +71,15 @@
       }
     },
     {
-      "key": "basic_pickaxe/ivory_psimetal",
+      "key": "double/basic_pickaxe/ivory_psimetal",
       "damage": 3.0,
-      "attackSpeed": -0.099999905,
+      "attackSpeed": -4.6,
       "durability": 1110,
       "integrity": -4,
       "effects": {},
       "glyph": {
         "tint": "201f1f",
-        "textureX": 176
+        "textureX": 32
       },
       "capabilities": {
         "pickaxe": [

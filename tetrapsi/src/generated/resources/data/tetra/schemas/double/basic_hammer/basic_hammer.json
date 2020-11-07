@@ -8,8 +8,8 @@
       "requiredCapabilities": {
         "hammer": 2
       },
-      "moduleKey": "double/basic_hammer",
-      "moduleVariant": "basic_hammer/psimetal"
+      "moduleKey": "basic_hammer",
+      "moduleVariant": "double/basic_hammer/psimetal"
     },
     {
       "material": {
@@ -19,8 +19,8 @@
       "requiredCapabilities": {
         "hammer": 3
       },
-      "moduleKey": "double/basic_hammer",
-      "moduleVariant": "basic_hammer/ebony_psimetal"
+      "moduleKey": "basic_hammer",
+      "moduleVariant": "double/basic_hammer/ebony_psimetal"
     },
     {
       "material": {
@@ -30,8 +30,8 @@
       "requiredCapabilities": {
         "hammer": 3
       },
-      "moduleKey": "double/basic_hammer",
-      "moduleVariant": "basic_hammer/ivory_psimetal"
+      "moduleKey": "basic_hammer",
+      "moduleVariant": "double/basic_hammer/ivory_psimetal"
     }
   ]
 }

@@ -1,8 +1,10 @@
 package eutros.tetrapsi.data;
 
 import eutros.tetraits.data.gen.template.Pattern;
+import eutros.tetraits.data.gen.template.Pattern.IKey;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.util.ResourceLocation;
+import se.mickelus.tetra.capabilities.Capability;
 import vazkii.psi.common.lib.ModTags;
 
 import java.util.StringJoiner;
@@ -25,25 +27,23 @@ public interface ITetrapsiDataProvider {
         return new ResourceLocation("psi", path);
     }
 
-    Pattern.IKey<String> NAME = Pattern.IKey.of(String.class, "NAME");
-    Pattern.IKey<Integer> TINT = Pattern.IKey.of(Integer.class, "TINT");
+    IKey<String> NAME = IKey.of(String.class, "NAME");
+    IKey<Integer> TINT = IKey.of(Integer.class, "TINT");
 
-    Pattern.IKey<Integer> CAD_EFFICIENCY = Pattern.IKey.of(Integer.class, "CAD_EFFICIENCY");
-    Pattern.IKey<Integer> CAD_POTENCY = Pattern.IKey.of(Integer.class, "CAD_POTENCY");
-    Pattern.IKey<Integer> CAD_COMPLEXITY = Pattern.IKey.of(Integer.class, "CAD_COMPLEXITY");
-    Pattern.IKey<Integer> CAD_PROJECTION = Pattern.IKey.of(Integer.class, "CAD_PROJECTION");
-    Pattern.IKey<Integer> CAD_BANDWIDTH = Pattern.IKey.of(Integer.class, "CAD_BANDWIDTH");
-    Pattern.IKey<Integer> CAD_SOCKETS = Pattern.IKey.of(Integer.class, "CAD_SOCKETS");
+    IKey<Integer> CAD_EFFICIENCY = IKey.of(Integer.class, "CAD_EFFICIENCY");
+    IKey<Integer> CAD_POTENCY = IKey.of(Integer.class, "CAD_POTENCY");
+    IKey<Integer> CAD_COMPLEXITY = IKey.of(Integer.class, "CAD_COMPLEXITY");
+    IKey<Integer> CAD_PROJECTION = IKey.of(Integer.class, "CAD_PROJECTION");
+    IKey<Integer> CAD_BANDWIDTH = IKey.of(Integer.class, "CAD_BANDWIDTH");
+    IKey<Integer> CAD_SOCKETS = IKey.of(Integer.class, "CAD_SOCKETS");
 
-    Pattern.IKey<Integer> TOOL_MAX_USES = Pattern.IKey.of(Integer.class, "TOOL_MAX_USES");
-    Pattern.IKey<Float> TOOL_EFFICIENCY = Pattern.IKey.of(Float.class, "TOOL_EFFICIENCY");
-    Pattern.IKey<Float> TOOL_ATTACK_DAMAGE = Pattern.IKey.of(Float.class, "TOOL_ATTACK_DAMAGE");
-    Pattern.IKey<Integer> TOOL_HARVEST_LEVEL = Pattern.IKey.of(Integer.class, "TOOL_HARVEST_LEVEL");
-    Pattern.IKey<Integer> TOOL_ENCHANTABILITY = Pattern.IKey.of(Integer.class, "TOOL_ENCHANTABILITY");
+    IKey<Integer> TOOL_MAX_USES = IKey.of(Integer.class, "TOOL_MAX_USES");
+    IKey<Float> TOOL_EFFICIENCY = IKey.of(Float.class, "TOOL_EFFICIENCY");
+    IKey<Float> TOOL_ATTACK_DAMAGE = IKey.of(Float.class, "TOOL_ATTACK_DAMAGE");
+    IKey<Integer> TOOL_HARVEST_LEVEL = IKey.of(Integer.class, "TOOL_HARVEST_LEVEL");
+    IKey<Integer> TOOL_ENCHANTABILITY = IKey.of(Integer.class, "TOOL_ENCHANTABILITY");
 
-    Pattern.IKey<ItemPredicate> PREDICATE = Pattern.IKey.of(ItemPredicate.class, "PREDICATE");
-
-    Pattern.IKey<String> MODULE_TYPE_KEY = Pattern.IKey.of(String.class, "MODULE_TYPE");
+    IKey<ItemPredicate> PREDICATE = IKey.of(ItemPredicate.class, "PREDICATE");
 
     // vazkii.psi.common.item.component.DefaultStats
 
@@ -118,5 +118,78 @@ public interface ITetrapsiDataProvider {
                             .create()
                             .tag(ModTags.INGOT_IVORY_PSIMETAL)
                             .build());
+
+    IKey<Integer> MATERIAL_COUNT = IKey.of(Integer.class, "MATERIAL_COUNT");
+    IKey<String> MODULE_TYPE_KEY = IKey.of(String.class, "MODULE_TYPE");
+    IKey<String> MODULE_KEY = IKey.of(String.class, "MODULE_KEY");
+
+    IKey<Integer> GLYPH_X = IKey.of(Integer.class, "GLYPH_X");
+    IKey<Integer> GLYPH_Y = IKey.of(Integer.class, "GLYPH_Y");
+    IKey<ResourceLocation> MODEL = IKey.of(ResourceLocation.class, "MODEL");
+
+    IKey<Capability[]> REQUIRED_CAPABILITIES = IKey.of(Capability[].class, "REQUIRED_CAPABILITIES");
+    IKey<Integer> DURABILITY_OFFSET = IKey.of(Integer.class, "DURABILITY_OFFSET");
+    IKey<Float> DURABILITY_MULTIPLIER = IKey.of(Float.class, "DURABILITY_MULTIPLIER");
+    IKey<Float> SPEED_OFFSET = IKey.of(Float.class, "SPEED_OFFSET");
+    IKey<Float> SPEED_MULTIPLIER = IKey.of(Float.class, "SPEED_MULTIPLIER");
+    IKey<Float> DAMAGE_OFFSET = IKey.of(Float.class, "DAMAGE_OFFSET");
+    IKey<Float> DAMAGE_MULTIPLIER = IKey.of(Float.class, "DAMAGE_MULTIPLIER");
+    IKey<Integer> INTEGRITY_OFFSET = IKey.of(Integer.class, "INTEGRITY_OFFSET");
+    IKey<Integer> CAPABILITY_OFFSET = IKey.of(Integer.class, "CAPABILITY_OFFSET");
+
+    IKey<Capability[]> SUPPLIED_CAPS = IKey.of(Capability[].class, "SUPPLIED_CAPS");
+    IKey<Float> CAP_EFF_OFFSET = IKey.of(Float.class, "CAP_EFF_OFFSET");
+    IKey<Float> CAP_EFF_MUL = IKey.of(Float.class, "CAP_EFF_MUL");
+
+    static Pattern module(String moduleType, String module, Capability[] requiredCaps,
+                          int materialCount,
+                          int glyphX, int glyphY, ResourceLocation model,
+                          int durabilityOffset, float durabilityMultiplier,
+                          float speedOffset, float speedMultiplier,
+                          int integrityOffset,
+                          float damageOffset, float damageMultiplier,
+                          int capabilityOffset,
+                          Capability[] suppliedCaps, float capEffOffset, float capEffMultiplier) {
+        return Pattern.create()
+                .property(MATERIAL_COUNT, materialCount)
+                .property(MODULE_TYPE_KEY, moduleType)
+                .property(MODULE_KEY, module)
+                .property(GLYPH_X, glyphX)
+                .property(GLYPH_Y, glyphY)
+                .property(MODEL, model)
+                .property(REQUIRED_CAPABILITIES, requiredCaps)
+                .property(DURABILITY_OFFSET, durabilityOffset)
+                .property(DURABILITY_MULTIPLIER, durabilityMultiplier)
+                .property(SPEED_OFFSET, speedOffset)
+                .property(SPEED_MULTIPLIER, speedMultiplier)
+                .property(INTEGRITY_OFFSET, integrityOffset)
+                .property(DAMAGE_OFFSET, damageOffset)
+                .property(DAMAGE_MULTIPLIER, damageMultiplier)
+                .property(CAPABILITY_OFFSET, capabilityOffset)
+                .property(SUPPLIED_CAPS, suppliedCaps)
+                .property(CAP_EFF_OFFSET, capEffOffset)
+                .property(CAP_EFF_MUL, capEffMultiplier);
+    }
+
+    Pattern[] modules = {
+            module(join("double", "basic_pickaxe"), "basic_pickaxe", new Capability[] {Capability.hammer},
+                    2,
+                    32, 0, tetra("items/module/double/head/basic_pickaxe/metal"),
+                    0, 1,
+                    -9, 0.5F,
+                    0,
+                    0, 1,
+                    0,
+                    new Capability[] {Capability.pickaxe}, 0, 1),
+            module(join("double", "basic_hammer"), "basic_hammer", new Capability[] {Capability.hammer},
+                    2,
+                    64, 0, tetra("items/module/double/head/basic_hammer/metal"),
+                    0, 1,
+                    0, 1,
+                    0,
+                    1, 1,
+                    0,
+                    new Capability[] {Capability.hammer}, 0, 0.7F),
+    };
 
 }
