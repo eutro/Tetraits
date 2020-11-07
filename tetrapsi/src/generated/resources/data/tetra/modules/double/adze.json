@@ -12,11 +12,11 @@
         "textureX": 32
       },
       "capabilities": {
-        "axe": [
+        "shovel": [
           3,
           4.6800003
         ],
-        "shovel": [
+        "axe": [
           3,
           4.6800003
         ]
@@ -51,11 +51,11 @@
         "textureX": 32
       },
       "capabilities": {
-        "axe": [
+        "shovel": [
           4,
           4.9800005
         ],
-        "shovel": [
+        "axe": [
           4,
           4.9800005
         ]
@@ -90,11 +90,11 @@
         "textureX": 32
       },
       "capabilities": {
-        "axe": [
+        "shovel": [
           4,
           5.28
         ],
-        "shovel": [
+        "axe": [
           4,
           5.28
         ]

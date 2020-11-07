@@ -56,14 +56,14 @@ public class TetrapsiSchemaProvider extends SchemaDataProvider implements ITetra
 
     @Override
     protected void collectData(@Nonnull DataConsumer<SchemaDefinition> consumer) throws IOException {
-        consumer.accept(tetra(join("double", "basic_pickaxe")),
+        consumer.accept(tetra(join("double", "basic_pickaxe", "basic_pickaxe")),
                 SCHEMA_TEMPLATE.apply(Pattern.create()
                         .property(MODULE_KEY, join("double", "basic_pickaxe"))
                         .property(MODULE_TYPE_KEY, "basic_pickaxe")
                         .property(MATERIAL_COUNT, 2)
                         .property(REQUIRED_CAPABILITIES, p -> b -> b
                                 .val(Capability.hammer, p.get(TOOL_HARVEST_LEVEL) - 1))));
-        consumer.accept(tetra(join("double", "basic_hammer")),
+        consumer.accept(tetra(join("double", "basic_hammer", "basic_hammer")),
                 SCHEMA_TEMPLATE.apply(Pattern.create()
                         .property(MODULE_KEY, join("double", "basic_hammer"))
                         .property(MODULE_TYPE_KEY, "basic_hammer")

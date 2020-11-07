@@ -22,7 +22,7 @@ description='''Psi Tetra tools!'''
     modId="tetra"
     mandatory=true
     versionRange="[1.15.2-2.12,)"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 [[dependencies.tetrapsi]]
     modId="tetraits"

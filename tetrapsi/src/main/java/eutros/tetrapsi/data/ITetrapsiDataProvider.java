@@ -5,10 +5,16 @@ import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.util.ResourceLocation;
 import vazkii.psi.common.lib.ModTags;
 
+import java.util.StringJoiner;
+
 public interface ITetrapsiDataProvider {
 
-    static String join(String a, String b) {
-        return a + "/" + b;
+    static String join(CharSequence... strings) {
+        StringJoiner sj = new StringJoiner("/");
+        for(CharSequence string : strings) {
+            sj.add(string);
+        }
+        return sj.toString();
     }
 
     static ResourceLocation tetra(String path) {
