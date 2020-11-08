@@ -1,26 +1,20 @@
 {
   "variants": [
     {
-      "key": "basic_hammer/psimetal",
-      "damage": 3.0,
+      "key": "basic_handle/psimetal",
       "attackSpeed": -1.5600001,
-      "durability": 900,
-      "integrity": -3,
+      "durability": 440,
+      "integrity": 8,
       "effects": {},
       "glyph": {
         "tint": "d2c8f1",
-        "textureX": 64
+        "textureX": 16
       },
-      "capabilities": {
-        "hammer": [
-          3,
-          5.46
-        ]
-      },
+      "capabilities": {},
       "models": [
         {
           "tint": "d2c8f1",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/handle/basic/default"
         }
       ],
       "magicCapacity": 12,
@@ -36,26 +30,20 @@
       }
     },
     {
-      "key": "basic_hammer/ebony_psimetal",
-      "damage": 4.5,
+      "key": "basic_handle/ebony_psimetal",
       "attackSpeed": -1.6600001,
-      "durability": 1200,
-      "integrity": -4,
+      "durability": 590,
+      "integrity": 10,
       "effects": {},
       "glyph": {
         "tint": "201f1f",
-        "textureX": 64
+        "textureX": 16
       },
-      "capabilities": {
-        "hammer": [
-          4,
-          5.81
-        ]
-      },
+      "capabilities": {},
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/handle/basic/default"
         }
       ],
       "magicCapacity": 15,
@@ -71,26 +59,20 @@
       }
     },
     {
-      "key": "basic_hammer/ivory_psimetal",
-      "damage": 4.0,
+      "key": "basic_handle/ivory_psimetal",
       "attackSpeed": -1.7600001,
-      "durability": 1110,
-      "integrity": -4,
+      "durability": 545,
+      "integrity": 10,
       "effects": {},
       "glyph": {
         "tint": "f3f7e6",
-        "textureX": 64
+        "textureX": 16
       },
-      "capabilities": {
-        "hammer": [
-          4,
-          6.16
-        ]
-      },
+      "capabilities": {},
       "models": [
         {
           "tint": "f3f7e6",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/handle/basic/default"
         }
       ],
       "magicCapacity": 18,

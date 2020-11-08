@@ -1,0 +1,37 @@
+{
+  "outcomes": [
+    {
+      "material": {
+        "tag": "forge:ingots/psimetal",
+        "count": 2
+      },
+      "requiredCapabilities": {
+        "hammer": 2
+      },
+      "moduleKey": "double/adze",
+      "moduleVariant": "adze/psimetal"
+    },
+    {
+      "material": {
+        "tag": "forge:ingots/ebony_psimetal",
+        "count": 2
+      },
+      "requiredCapabilities": {
+        "hammer": 3
+      },
+      "moduleKey": "double/adze",
+      "moduleVariant": "adze/ebony_psimetal"
+    },
+    {
+      "material": {
+        "tag": "forge:ingots/ivory_psimetal",
+        "count": 2
+      },
+      "requiredCapabilities": {
+        "hammer": 3
+      },
+      "moduleKey": "double/adze",
+      "moduleVariant": "adze/ivory_psimetal"
+    }
+  ]
+}

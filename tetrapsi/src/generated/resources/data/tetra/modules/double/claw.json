@@ -1,26 +1,29 @@
 {
   "variants": [
     {
-      "key": "basic_hammer/psimetal",
-      "damage": 3.0,
-      "attackSpeed": -1.5600001,
-      "durability": 900,
+      "key": "claw/psimetal",
+      "damage": 0.5,
+      "attackSpeed": -3.1200001,
+      "durability": 720,
       "integrity": -3,
-      "effects": {},
+      "effects": {
+        "denailing": 1
+      },
       "glyph": {
         "tint": "d2c8f1",
-        "textureX": 64
+        "textureX": 64,
+        "textureY": 32
       },
       "capabilities": {
-        "hammer": [
-          3,
-          5.46
+        "pry": [
+          1,
+          4.6800003
         ]
       },
       "models": [
         {
           "tint": "d2c8f1",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/claw/metal"
         }
       ],
       "magicCapacity": 12,
@@ -36,26 +39,29 @@
       }
     },
     {
-      "key": "basic_hammer/ebony_psimetal",
-      "damage": 4.5,
-      "attackSpeed": -1.6600001,
-      "durability": 1200,
+      "key": "claw/ebony_psimetal",
+      "damage": 0.875,
+      "attackSpeed": -3.3200002,
+      "durability": 960,
       "integrity": -4,
-      "effects": {},
+      "effects": {
+        "denailing": 1
+      },
       "glyph": {
         "tint": "201f1f",
-        "textureX": 64
+        "textureX": 64,
+        "textureY": 32
       },
       "capabilities": {
-        "hammer": [
-          4,
-          5.81
+        "pry": [
+          1,
+          4.9800005
         ]
       },
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/claw/metal"
         }
       ],
       "magicCapacity": 15,
@@ -71,26 +77,29 @@
       }
     },
     {
-      "key": "basic_hammer/ivory_psimetal",
-      "damage": 4.0,
-      "attackSpeed": -1.7600001,
-      "durability": 1110,
+      "key": "claw/ivory_psimetal",
+      "damage": 0.75,
+      "attackSpeed": -3.5200002,
+      "durability": 888,
       "integrity": -4,
-      "effects": {},
+      "effects": {
+        "denailing": 1
+      },
       "glyph": {
         "tint": "f3f7e6",
-        "textureX": 64
+        "textureX": 64,
+        "textureY": 32
       },
       "capabilities": {
-        "hammer": [
-          4,
-          6.16
+        "pry": [
+          1,
+          5.28
         ]
       },
       "models": [
         {
           "tint": "f3f7e6",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/claw/metal"
         }
       ],
       "magicCapacity": 18,

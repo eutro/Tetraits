@@ -3,7 +3,7 @@
     {
       "key": "basic_pickaxe/psimetal",
       "damage": 2.0,
-      "attackSpeed": -5.1,
+      "attackSpeed": -1.5600001,
       "durability": 900,
       "integrity": -3,
       "effects": {},
@@ -38,7 +38,7 @@
     {
       "key": "basic_pickaxe/ebony_psimetal",
       "damage": 3.5,
-      "attackSpeed": -4.85,
+      "attackSpeed": -1.6600001,
       "durability": 1200,
       "integrity": -4,
       "effects": {},
@@ -73,7 +73,7 @@
     {
       "key": "basic_pickaxe/ivory_psimetal",
       "damage": 3.0,
-      "attackSpeed": -4.6,
+      "attackSpeed": -1.7600001,
       "durability": 1110,
       "integrity": -4,
       "effects": {},

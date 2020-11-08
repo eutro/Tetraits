@@ -1,0 +1,34 @@
+{
+  "outcomes": [
+    {
+      "material": {
+        "tag": "forge:ingots/psimetal"
+      },
+      "requiredCapabilities": {
+        "hammer": 2
+      },
+      "moduleKey": "double/butt",
+      "moduleVariant": "butt/psimetal"
+    },
+    {
+      "material": {
+        "tag": "forge:ingots/ebony_psimetal"
+      },
+      "requiredCapabilities": {
+        "hammer": 3
+      },
+      "moduleKey": "double/butt",
+      "moduleVariant": "butt/ebony_psimetal"
+    },
+    {
+      "material": {
+        "tag": "forge:ingots/ivory_psimetal"
+      },
+      "requiredCapabilities": {
+        "hammer": 3
+      },
+      "moduleKey": "double/butt",
+      "moduleVariant": "butt/ivory_psimetal"
+    }
+  ]
+}

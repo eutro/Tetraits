@@ -1,8 +1,0 @@
-{
-  "tetrapsi.prefix.psimetal": "Psimetal",
-  "tetrapsi.prefix.ebony_psimetal": "Ebony",
-  "tetrapsi.prefix.ivory_psimetal": "Ivory",
-
-  "tetrapsi.module.basic_pickaxe": "%s pick",
-  "tetrapsi.module.basic_hammer": "%s hammer"
-}

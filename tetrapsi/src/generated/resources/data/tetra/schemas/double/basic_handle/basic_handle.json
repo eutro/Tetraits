@@ -1,0 +1,34 @@
+{
+  "outcomes": [
+    {
+      "material": {
+        "tag": "forge:ingots/psimetal"
+      },
+      "requiredCapabilities": {
+        "hammer": 2
+      },
+      "moduleKey": "double/basic_handle",
+      "moduleVariant": "basic_handle/psimetal"
+    },
+    {
+      "material": {
+        "tag": "forge:ingots/ebony_psimetal"
+      },
+      "requiredCapabilities": {
+        "hammer": 3
+      },
+      "moduleKey": "double/basic_handle",
+      "moduleVariant": "basic_handle/ebony_psimetal"
+    },
+    {
+      "material": {
+        "tag": "forge:ingots/ivory_psimetal"
+      },
+      "requiredCapabilities": {
+        "hammer": 3
+      },
+      "moduleKey": "double/basic_handle",
+      "moduleVariant": "basic_handle/ivory_psimetal"
+    }
+  ]
+}

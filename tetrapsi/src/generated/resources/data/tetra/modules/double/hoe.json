@@ -1,26 +1,24 @@
 {
   "variants": [
     {
-      "key": "basic_hammer/psimetal",
-      "damage": 3.0,
-      "attackSpeed": -1.5600001,
+      "key": "hoe/psimetal",
+      "damage": 2.0,
+      "attackSpeed": -1.61,
       "durability": 900,
       "integrity": -3,
-      "effects": {},
+      "effects": {
+        "tilling": 1
+      },
       "glyph": {
         "tint": "d2c8f1",
-        "textureX": 64
+        "textureX": 16,
+        "textureY": 32
       },
-      "capabilities": {
-        "hammer": [
-          3,
-          5.46
-        ]
-      },
+      "capabilities": {},
       "models": [
         {
           "tint": "d2c8f1",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/hoe/metal"
         }
       ],
       "magicCapacity": 12,
@@ -36,26 +34,24 @@
       }
     },
     {
-      "key": "basic_hammer/ebony_psimetal",
-      "damage": 4.5,
-      "attackSpeed": -1.6600001,
+      "key": "hoe/ebony_psimetal",
+      "damage": 3.5,
+      "attackSpeed": -1.71,
       "durability": 1200,
       "integrity": -4,
-      "effects": {},
+      "effects": {
+        "tilling": 1
+      },
       "glyph": {
         "tint": "201f1f",
-        "textureX": 64
+        "textureX": 16,
+        "textureY": 32
       },
-      "capabilities": {
-        "hammer": [
-          4,
-          5.81
-        ]
-      },
+      "capabilities": {},
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/hoe/metal"
         }
       ],
       "magicCapacity": 15,
@@ -71,26 +67,24 @@
       }
     },
     {
-      "key": "basic_hammer/ivory_psimetal",
-      "damage": 4.0,
-      "attackSpeed": -1.7600001,
+      "key": "hoe/ivory_psimetal",
+      "damage": 3.0,
+      "attackSpeed": -1.8100001,
       "durability": 1110,
       "integrity": -4,
-      "effects": {},
+      "effects": {
+        "tilling": 1
+      },
       "glyph": {
         "tint": "f3f7e6",
-        "textureX": 64
+        "textureX": 16,
+        "textureY": 32
       },
-      "capabilities": {
-        "hammer": [
-          4,
-          6.16
-        ]
-      },
+      "capabilities": {},
       "models": [
         {
           "tint": "f3f7e6",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/hoe/metal"
         }
       ],
       "magicCapacity": 18,

@@ -1,0 +1,15 @@
+{
+  "tetrapsi.prefix.psimetal": "Psimetal",
+  "tetrapsi.prefix.ebony_psimetal": "Ebony",
+  "tetrapsi.prefix.ivory_psimetal": "Ivory",
+
+  "tetrapsi.module.adze": "%s adze",
+  "tetrapsi.module.basic_axe": "%s axe",
+  "tetrapsi.module.basic_hammer": "%s hammer",
+  "tetrapsi.module.basic_handle": "%s handle",
+  "tetrapsi.module.basic_pickaxe": "%s pick",
+  "tetrapsi.module.butt": "%s butt",
+  "tetrapsi.module.claw": "%s claw",
+  "tetrapsi.module.hoe": "%s hoe",
+  "tetrapsi.module.sickle": "%s sickle"
+}

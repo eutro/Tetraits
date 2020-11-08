@@ -1,26 +1,28 @@
 {
   "variants": [
     {
-      "key": "basic_hammer/psimetal",
-      "damage": 3.0,
-      "attackSpeed": -1.5600001,
-      "durability": 900,
+      "key": "basic_axe/psimetal",
+      "damage": 4.0,
+      "attackSpeed": -2.5400002,
+      "durability": 1090,
       "integrity": -3,
-      "effects": {},
+      "effects": {
+        "stripping": 1
+      },
       "glyph": {
         "tint": "d2c8f1",
-        "textureX": 64
+        "textureX": 144
       },
       "capabilities": {
-        "hammer": [
-          3,
-          5.46
+        "axe": [
+          4,
+          10.360001
         ]
       },
       "models": [
         {
           "tint": "d2c8f1",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/basic_axe/metal"
         }
       ],
       "magicCapacity": 12,
@@ -36,26 +38,28 @@
       }
     },
     {
-      "key": "basic_hammer/ebony_psimetal",
-      "damage": 4.5,
-      "attackSpeed": -1.6600001,
-      "durability": 1200,
+      "key": "basic_axe/ebony_psimetal",
+      "damage": 7.0,
+      "attackSpeed": -2.6900003,
+      "durability": 1420,
       "integrity": -4,
-      "effects": {},
+      "effects": {
+        "stripping": 1
+      },
       "glyph": {
         "tint": "201f1f",
-        "textureX": 64
+        "textureX": 144
       },
       "capabilities": {
-        "hammer": [
-          4,
-          5.81
+        "axe": [
+          5,
+          10.960001
         ]
       },
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/basic_axe/metal"
         }
       ],
       "magicCapacity": 15,
@@ -71,26 +75,28 @@
       }
     },
     {
-      "key": "basic_hammer/ivory_psimetal",
-      "damage": 4.0,
-      "attackSpeed": -1.7600001,
-      "durability": 1110,
+      "key": "basic_axe/ivory_psimetal",
+      "damage": 6.0,
+      "attackSpeed": -2.8400002,
+      "durability": 1321,
       "integrity": -4,
-      "effects": {},
+      "effects": {
+        "stripping": 1
+      },
       "glyph": {
         "tint": "f3f7e6",
-        "textureX": 64
+        "textureX": 144
       },
       "capabilities": {
-        "hammer": [
-          4,
-          6.16
+        "axe": [
+          5,
+          11.56
         ]
       },
       "models": [
         {
           "tint": "f3f7e6",
-          "location": "tetra:items/module/double/head/basic_hammer/metal"
+          "location": "tetra:items/module/double/head/basic_axe/metal"
         }
       ],
       "magicCapacity": 18,

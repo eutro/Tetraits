@@ -7,6 +7,7 @@ import eutros.tetraits.data.gen.template.Pattern.IKey;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
 import se.mickelus.tetra.capabilities.Capability;
+import se.mickelus.tetra.module.ItemEffect;
 import se.mickelus.tetra.module.data.*;
 
 import javax.annotation.Nonnull;
@@ -30,15 +31,26 @@ public class TetrapsiModuleProvider extends ModuleDataProvider implements ITetra
             BuilderTemplate.TemplateBuilder.<ModuleVariantBuilder>create()
                     .handle(p -> b -> {
                         Pattern module = p.get(MODULE_PATTERN);
-                        EnumDataBuilder<CapabilityData, Capability> edb = EnumDataBuilder.create(CapabilityData.class);
-                        for(Capability capability : module.get(SUPPLIED_CAPS)) {
-                            edb.cap(capability, p.get(TOOL_HARVEST_LEVEL),
-                                    p.get(TOOL_EFFICIENCY) * module.get(CAP_EFF_MUL) + module.get(CAP_EFF_OFFSET));
+                        EnumDataBuilder<CapabilityData, Capability> cedb = EnumDataBuilder.create(CapabilityData.class);
+                        Capability[] caps = module.get(CAPS);
+                        ValFunc[] valFuncs = module.get(CAP_VAL_FUNCS);
+                        EffFunc[] effFuncs = module.get(CAP_EFF_FUNCS);
+                        for(int i = 0; i < caps.length; i++) {
+                            if (effFuncs[i] == null) cedb.val(caps[i], valFuncs[i].val(p));
+                            else cedb.cap(caps[i], valFuncs[i].val(p), effFuncs[i].eff(p));
+                        }
+                        EnumDataBuilder<EffectData, ItemEffect> eedb = EnumDataBuilder.create(EffectData.class);
+                        ItemEffect[] effects = module.get(EFFS);
+                        valFuncs = module.get(EFF_VAL_FUNCS);
+                        effFuncs = module.get(EFF_EFF_FUNCS);
+                        for(int i = 0; i < effects.length; i++) {
+                            if (effFuncs[i] == null) eedb.val(effects[i], valFuncs[i].val(p));
+                            else eedb.cap(effects[i], valFuncs[i].val(p), effFuncs[i].eff(p));
                         }
                         return b.key(join(module.get(MODULE_KEY), p.get(NAME)))
                                 .glyph(p.get(TINT), module.get(GLYPH_X), module.get(GLYPH_Y))
                                 .model(new ModuleModel("item", module.get(MODEL), p.get(TINT)))
-                                .integrity(-p.get(TOOL_HARVEST_LEVEL) + module.get(INTEGRITY_OFFSET))
+                                .integrity(Math.round(p.get(TOOL_HARVEST_LEVEL) * module.get(INTEGRITY_MULTIPLIER)))
                                 .trait(PSI_EQIPMENT, true)
                                 .trait(PSI_REGEN, true)
                                 .trait(PSI_TOOL, true)
@@ -47,8 +59,8 @@ public class TetrapsiModuleProvider extends ModuleDataProvider implements ITetra
                                 .durability((int) (p.get(TOOL_MAX_USES) * module.get(DURABILITY_MULTIPLIER) + module.get(DURABILITY_OFFSET)))
                                 .attackSpeed(p.get(TOOL_EFFICIENCY) * module.get(SPEED_MULTIPLIER) + module.get(SPEED_OFFSET))
                                 .damage(p.get(TOOL_ATTACK_DAMAGE) * module.get(DAMAGE_MULTIPLIER) + module.get(DAMAGE_OFFSET))
-                                .capabilities(edb.build())
-                                .effects(EnumDataBuilder.create(EffectData.class).build());
+                                .capabilities(cedb.build())
+                                .effects(eedb.build());
                     })
                     .starter(p -> ModuleVariantBuilder.create())
                     .build(ModuleVariantBuilder::build);

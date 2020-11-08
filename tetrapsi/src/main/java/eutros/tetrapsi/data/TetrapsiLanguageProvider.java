@@ -33,7 +33,7 @@ public class TetrapsiLanguageProvider extends LanguageProvider implements ITetra
                     .getGenericType();
             Enumeration<URL> enumeration = getClass()
                     .getClassLoader()
-                    .getResources("assets/tetrapsi/lang/" + locale + "_base.json");
+                    .getResources("assets/tetrapsi/lang_base/" + locale + ".json");
             while(enumeration.hasMoreElements()) {
                 try(Reader rd = new InputStreamReader(enumeration.nextElement().openStream())) {
                     this.existing.putAll(GSON.fromJson(rd, type));

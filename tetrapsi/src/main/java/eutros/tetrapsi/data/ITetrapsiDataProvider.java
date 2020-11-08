@@ -5,9 +5,15 @@ import eutros.tetraits.data.gen.template.Pattern.IKey;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.util.ResourceLocation;
 import se.mickelus.tetra.capabilities.Capability;
+import se.mickelus.tetra.module.ItemEffect;
 import vazkii.psi.common.lib.ModTags;
 
+import javax.annotation.Nonnull;
+import java.lang.reflect.Array;
 import java.util.StringJoiner;
+
+import static se.mickelus.tetra.capabilities.Capability.*;
+import static se.mickelus.tetra.module.ItemEffect.*;
 
 public interface ITetrapsiDataProvider {
 
@@ -122,22 +128,76 @@ public interface ITetrapsiDataProvider {
     IKey<Float> SPEED_MULTIPLIER = IKey.of(Float.class, "SPEED_MULTIPLIER");
     IKey<Float> DAMAGE_OFFSET = IKey.of(Float.class, "DAMAGE_OFFSET");
     IKey<Float> DAMAGE_MULTIPLIER = IKey.of(Float.class, "DAMAGE_MULTIPLIER");
-    IKey<Integer> INTEGRITY_OFFSET = IKey.of(Integer.class, "INTEGRITY_OFFSET");
+    IKey<Float> INTEGRITY_MULTIPLIER = IKey.of(Float.class, "INTEGRITY_MULTIPLIER");
     IKey<Integer> CAPABILITY_OFFSET = IKey.of(Integer.class, "CAPABILITY_OFFSET");
 
-    IKey<Capability[]> SUPPLIED_CAPS = IKey.of(Capability[].class, "SUPPLIED_CAPS");
-    IKey<Float> CAP_EFF_OFFSET = IKey.of(Float.class, "CAP_EFF_OFFSET");
-    IKey<Float> CAP_EFF_MUL = IKey.of(Float.class, "CAP_EFF_MUL");
+    IKey<Capability[]> CAPS = IKey.of(Capability[].class, "CAPS");
+    IKey<ValFunc[]> CAP_VAL_FUNCS = IKey.ofUnchecked(ValFunc[].class, "CAP_VAL_FUNCS");
+    IKey<EffFunc[]> CAP_EFF_FUNCS = IKey.ofUnchecked(EffFunc[].class, "CAP_EFF_FUNCS");
+
+    IKey<ItemEffect[]> EFFS = IKey.of(ItemEffect[].class, "EFFS");
+    IKey<ValFunc[]> EFF_VAL_FUNCS = IKey.ofUnchecked(ValFunc[].class, "EFF_VAL_FUNCS");
+    IKey<EffFunc[]> EFF_EFF_FUNCS = IKey.ofUnchecked(EffFunc[].class, "EFF_EFF_FUNCS");
+
+    interface ValFunc {
+
+        int val(Pattern pattern);
+
+    }
+
+    interface EffFunc {
+
+        float eff(Pattern pattern);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T> T[] times(int n, @Nonnull T val) {
+        T[] arr = (T[]) Array.newInstance(val.getClass(), n);
+        for(int i = 0; i < n; i++) {
+            arr[i] = val;
+        }
+        return arr;
+    }
+    
+    @SafeVarargs
+    static <T> T[] arr(T... vals) {
+        return vals;
+    }
 
     static Pattern module(String moduleType, String module, Capability[] requiredCaps,
                           int materialCount,
                           int glyphX, int glyphY, ResourceLocation model,
                           int durabilityOffset, float durabilityMultiplier,
                           float speedOffset, float speedMultiplier,
-                          int integrityOffset,
+                          float integrityMultiplier,
                           float damageOffset, float damageMultiplier,
                           int capabilityOffset,
                           Capability[] suppliedCaps, float capEffOffset, float capEffMultiplier) {
+        return module(moduleType, module, requiredCaps,
+                materialCount,
+                glyphX, glyphY, model,
+                durabilityOffset, durabilityMultiplier,
+                speedOffset, speedMultiplier,
+                integrityMultiplier,
+                damageOffset, damageMultiplier,
+                capabilityOffset,
+                suppliedCaps,
+                times(suppliedCaps.length, p -> p.get(TOOL_HARVEST_LEVEL)),
+                times(suppliedCaps.length, p -> p.get(TOOL_EFFICIENCY) * capEffMultiplier + capEffOffset),
+                arr(), arr(), arr());
+    }
+
+    static Pattern module(String moduleType, String module, Capability[] requiredCaps,
+                          int materialCount,
+                          int glyphX, int glyphY, ResourceLocation model,
+                          int durabilityOffset, float durabilityMultiplier,
+                          float speedOffset, float speedMultiplier,
+                          float integrityMultiplier,
+                          float damageOffset, float damageMultiplier,
+                          int capabilityOffset,
+                          Capability[] suppliedCaps, ValFunc[] capVals, EffFunc[] capEffs,
+                          ItemEffect[] suppliedEffs, ValFunc[] effVals, EffFunc[] effEffs) {
         return Pattern.create()
                 .property(MATERIAL_COUNT, materialCount)
                 .property(MODULE_TYPE_KEY, moduleType)
@@ -150,34 +210,119 @@ public interface ITetrapsiDataProvider {
                 .property(DURABILITY_MULTIPLIER, durabilityMultiplier)
                 .property(SPEED_OFFSET, speedOffset)
                 .property(SPEED_MULTIPLIER, speedMultiplier)
-                .property(INTEGRITY_OFFSET, integrityOffset)
+                .property(INTEGRITY_MULTIPLIER, integrityMultiplier)
                 .property(DAMAGE_OFFSET, damageOffset)
                 .property(DAMAGE_MULTIPLIER, damageMultiplier)
                 .property(CAPABILITY_OFFSET, capabilityOffset)
-                .property(SUPPLIED_CAPS, suppliedCaps)
-                .property(CAP_EFF_OFFSET, capEffOffset)
-                .property(CAP_EFF_MUL, capEffMultiplier);
+                .property(CAPS, suppliedCaps)
+                .property(CAP_VAL_FUNCS, capVals)
+                .property(CAP_EFF_FUNCS, capEffs)
+                .property(EFFS, suppliedEffs)
+                .property(EFF_VAL_FUNCS, effVals)
+                .property(EFF_EFF_FUNCS, effEffs);
     }
 
     Pattern[] modules = {
-            module(join("double", "basic_pickaxe"), "basic_pickaxe", new Capability[] {Capability.hammer},
+            module(join("double", "adze"), "adze", arr(hammer),
                     2,
-                    176, 0, tetra("items/module/double/head/basic_pickaxe/metal"),
-                    0, 1,
-                    -9, 0.5F,
+                    32, 0, tetra("items/module/double/head/adze/metal"),
+                    0, 0.95F,
+                    0, -0.2F,
+                    -1,
+                    -1, 1,
                     0,
-                    0, 1,
+                    arr(axe, shovel), 0, 0.7F),
+            module(join("double", "basic_axe"), "basic_axe", arr(hammer),
+                    2,
+                    144, 0, tetra("items/module/double/head/basic_axe/metal"),
+                    100, 1.1F,
+                    -0.2F, -0.3F,
+                    -1,
+                    0, 2,
                     0,
-                    new Capability[] {Capability.pickaxe}, 0, 1),
-            module(join("double", "basic_hammer"), "basic_hammer", new Capability[] {Capability.hammer},
+                    arr(axe),
+                    arr(p -> p.get(TOOL_HARVEST_LEVEL) + 1),
+                    arr(p -> p.get(TOOL_EFFICIENCY) * 1.2F + 1),
+                    arr(ItemEffect.stripping),
+                    arr(p -> 1),
+                    arr((EffFunc) null)),
+            module(join("double", "basic_hammer"), "basic_hammer", arr(hammer),
                     2,
                     64, 0, tetra("items/module/double/head/basic_hammer/metal"),
                     0, 1,
-                    0, 1,
-                    0,
+                    0, -0.2F,
+                    -1,
                     1, 1,
                     0,
-                    new Capability[] {Capability.hammer}, 0, 0.7F),
+                    arr(hammer), 0, 0.7F),
+            module(join("double", "basic_handle"), "basic_handle", arr(hammer),
+                    1,
+                    16, 0, tetra("items/module/double/handle/basic/default"),
+                    -10, 0.5F,
+                    0, -0.2F,
+                    2.5F,
+                    0, 0,
+                    0,
+                    arr(), 0, 0),
+            module(join("double", "basic_pickaxe"), "basic_pickaxe", arr(hammer),
+                    2,
+                    176, 0, tetra("items/module/double/head/basic_pickaxe/metal"),
+                    0, 1,
+                    0, -0.2F,
+                    -1,
+                    0, 1,
+                    0,
+                    arr(pickaxe), 0, 1),
+            module(join("double", "butt"), "butt", arr(hammer),
+                    1,
+                    160, 0, tetra("items/module/double/head/butt/metal"),
+                    0, 0.6F,
+                    0, 0,
+                    -0.5F,
+                    0, 1,
+                    0,
+                    arr(hammer),
+                    arr(p -> 1),
+                    arr((EffFunc) null),
+                    arr(), arr(), arr()),
+            module(join("double", "claw"), "claw", arr(hammer),
+                    1,
+                    64, 32, tetra("items/module/double/head/claw/metal"),
+                    0, 0.8F,
+                    0, -0.4F,
+                    -1,
+                    0, 0.25F,
+                    -1,
+                    arr(pry),
+                    arr(p -> 1),
+                    arr(p -> p.get(TOOL_EFFICIENCY) * 0.6F),
+                    arr(denailing),
+                    arr(p -> 1),
+                    arr((EffFunc) null)),
+            module(join("double", "hoe"), "hoe", arr(hammer),
+                    2,
+                    16, 32, tetra("items/module/double/head/hoe/metal"),
+                    0, 1,
+                    -0.05F, -0.2F,
+                    -1,
+                    0, 1,
+                    0,
+                    arr(), arr(), arr(),
+                    arr(tilling),
+                    arr(p -> 1),
+                    arr((EffFunc) null)),
+            module(join("double", "sickle"), "sickle", arr(hammer),
+                    2,
+                    32, 32, tetra("items/module/double/head/sickle/metal"),
+                    0, 0.95F,
+                    0, -0.2F,
+                    -1,
+                    -1, 1,
+                    0,
+                    arr(cut), arr(p -> 1), arr(p -> p.get(TOOL_EFFICIENCY)),
+                    arr(strikingCut, sweepingStrike, sweeping),
+                    times(3, p -> 1),
+                    arr(null, null, null)),
     };
 
 }
