@@ -1,7 +1,7 @@
 {
   "variants": [
     {
-      "key": "double/basic_hammer/psimetal",
+      "key": "basic_hammer/psimetal",
       "damage": 3.0,
       "attackSpeed": 7.8,
       "durability": 900,
@@ -36,7 +36,7 @@
       }
     },
     {
-      "key": "double/basic_hammer/ebony_psimetal",
+      "key": "basic_hammer/ebony_psimetal",
       "damage": 4.5,
       "attackSpeed": 8.3,
       "durability": 1200,
@@ -71,14 +71,14 @@
       }
     },
     {
-      "key": "double/basic_hammer/ivory_psimetal",
+      "key": "basic_hammer/ivory_psimetal",
       "damage": 4.0,
       "attackSpeed": 8.8,
       "durability": 1110,
       "integrity": -4,
       "effects": {},
       "glyph": {
-        "tint": "201f1f",
+        "tint": "f3f7e6",
         "textureX": 64
       },
       "capabilities": {
@@ -89,7 +89,7 @@
       },
       "models": [
         {
-          "tint": "201f1f",
+          "tint": "f3f7e6",
           "location": "tetra:items/module/double/head/basic_hammer/metal"
         }
       ],

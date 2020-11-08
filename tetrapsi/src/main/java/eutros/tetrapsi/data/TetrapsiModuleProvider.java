@@ -35,7 +35,7 @@ public class TetrapsiModuleProvider extends ModuleDataProvider implements ITetra
                             edb.cap(capability, p.get(TOOL_HARVEST_LEVEL),
                                     p.get(TOOL_EFFICIENCY) * module.get(CAP_EFF_MUL) + module.get(CAP_EFF_OFFSET));
                         }
-                        return b.key(join(module.get(MODULE_TYPE_KEY), p.get(NAME)))
+                        return b.key(join(module.get(MODULE_KEY), p.get(NAME)))
                                 .glyph(p.get(TINT), module.get(GLYPH_X), module.get(GLYPH_Y))
                                 .model(new ModuleModel("item", module.get(MODEL), p.get(TINT)))
                                 .integrity(-p.get(TOOL_HARVEST_LEVEL) + module.get(INTEGRITY_OFFSET))

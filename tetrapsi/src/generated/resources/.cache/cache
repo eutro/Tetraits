@@ -1,4 +1,5 @@
-a31f940b0d377e46c06ddd5aa5188c69d42a67ad data/tetra/modules/double/basic_hammer.json
-5aefd3edfe8f9a05962803146dcc240489a6ce9e data/tetra/modules/double/basic_pickaxe.json
-d9500b29e900a723ebb65991747beb870ad6a06a data/tetra/schemas/double/basic_hammer/basic_hammer.json
-0eff15affb69da575056e746179d1666b97b0567 data/tetra/schemas/double/basic_pickaxe/basic_pickaxe.json
+7c0e7096cbf427e8caba038526da9b817270e044 assets/tetrapsi/lang/en_us.json
+4f5d5fbaf2201af81f490adccdf2a2341012b277 data/tetra/modules/double/basic_hammer.json
+160e33034db2ff11aeff3a1faf02713b7e721488 data/tetra/modules/double/basic_pickaxe.json
+f9da4a67896d412810b8c359834b78016d832a1f data/tetra/schemas/double/basic_hammer/basic_hammer.json
+a74a6391d54ee312c6ee7c56a577c22e1cdf0166 data/tetra/schemas/double/basic_pickaxe/basic_pickaxe.json

@@ -1,0 +1,14 @@
+{
+  "tetra.variant.basic_hammer/ebony_psimetal": "Ebony hammer",
+  "tetra.variant.basic_hammer/ebony_psimetal.prefix": "Ebony",
+  "tetra.variant.basic_hammer/ivory_psimetal": "Ivory hammer",
+  "tetra.variant.basic_hammer/ivory_psimetal.prefix": "Ivory",
+  "tetra.variant.basic_hammer/psimetal": "Psimetal hammer",
+  "tetra.variant.basic_hammer/psimetal.prefix": "Psimetal",
+  "tetra.variant.basic_pickaxe/ebony_psimetal": "Ebony pick",
+  "tetra.variant.basic_pickaxe/ebony_psimetal.prefix": "Ebony",
+  "tetra.variant.basic_pickaxe/ivory_psimetal": "Ivory pick",
+  "tetra.variant.basic_pickaxe/ivory_psimetal.prefix": "Ivory",
+  "tetra.variant.basic_pickaxe/psimetal": "Psimetal pick",
+  "tetra.variant.basic_pickaxe/psimetal.prefix": "Psimetal"
+}

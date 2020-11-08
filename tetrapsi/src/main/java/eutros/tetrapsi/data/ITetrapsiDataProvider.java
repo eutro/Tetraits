@@ -65,11 +65,7 @@ public interface ITetrapsiDataProvider {
             .property(TOOL_ATTACK_DAMAGE, 2F)
             .property(TOOL_HARVEST_LEVEL, 3)
             .property(TOOL_ENCHANTABILITY, 12)
-            .property(PREDICATE,
-                    ItemPredicate.Builder
-                            .create()
-                            .tag(ModTags.INGOT_PSIMETAL)
-                            .build());
+            .property(PREDICATE, ItemPredicate.Builder.create().tag(ModTags.INGOT_PSIMETAL).build());
 
     Pattern EBONY = Pattern.create()
             .property(NAME, "ebony_psimetal")
@@ -89,15 +85,11 @@ public interface ITetrapsiDataProvider {
             .property(TOOL_ATTACK_DAMAGE, 3.5F) // bandwidth / 2 - 1
             .property(TOOL_HARVEST_LEVEL, 4)
             .property(TOOL_ENCHANTABILITY, 15) // sockets * 1.5
-            .property(PREDICATE,
-                    ItemPredicate.Builder
-                            .create()
-                            .tag(ModTags.INGOT_EBONY_PSIMETAL)
-                            .build());
+            .property(PREDICATE, ItemPredicate.Builder.create().tag(ModTags.INGOT_EBONY_PSIMETAL).build());
 
     Pattern IVORY = Pattern.create()
             .property(NAME, "ivory_psimetal")
-            .property(TINT, 0x201f1f)
+            .property(TINT, 0xf3f7e6)
             // Ivory assembly
             .property(CAD_EFFICIENCY, 95)
             .property(CAD_POTENCY, 320)
@@ -113,11 +105,7 @@ public interface ITetrapsiDataProvider {
             .property(TOOL_ATTACK_DAMAGE, 3F) // bandwidth / 2 - 1
             .property(TOOL_HARVEST_LEVEL, 4)
             .property(TOOL_ENCHANTABILITY, 18) // sockets * 1.5
-            .property(PREDICATE,
-                    ItemPredicate.Builder
-                            .create()
-                            .tag(ModTags.INGOT_IVORY_PSIMETAL)
-                            .build());
+            .property(PREDICATE, ItemPredicate.Builder.create().tag(ModTags.INGOT_IVORY_PSIMETAL).build());
 
     IKey<Integer> MATERIAL_COUNT = IKey.of(Integer.class, "MATERIAL_COUNT");
     IKey<String> MODULE_TYPE_KEY = IKey.of(String.class, "MODULE_TYPE");
@@ -174,7 +162,7 @@ public interface ITetrapsiDataProvider {
     Pattern[] modules = {
             module(join("double", "basic_pickaxe"), "basic_pickaxe", new Capability[] {Capability.hammer},
                     2,
-                    32, 0, tetra("items/module/double/head/basic_pickaxe/metal"),
+                    176, 0, tetra("items/module/double/head/basic_pickaxe/metal"),
                     0, 1,
                     -9, 0.5F,
                     0,

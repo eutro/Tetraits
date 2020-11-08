@@ -1,7 +1,7 @@
 {
   "variants": [
     {
-      "key": "double/basic_pickaxe/psimetal",
+      "key": "basic_pickaxe/psimetal",
       "damage": 2.0,
       "attackSpeed": -5.1,
       "durability": 900,
@@ -9,7 +9,7 @@
       "effects": {},
       "glyph": {
         "tint": "d2c8f1",
-        "textureX": 32
+        "textureX": 176
       },
       "capabilities": {
         "pickaxe": [
@@ -36,7 +36,7 @@
       }
     },
     {
-      "key": "double/basic_pickaxe/ebony_psimetal",
+      "key": "basic_pickaxe/ebony_psimetal",
       "damage": 3.5,
       "attackSpeed": -4.85,
       "durability": 1200,
@@ -44,7 +44,7 @@
       "effects": {},
       "glyph": {
         "tint": "201f1f",
-        "textureX": 32
+        "textureX": 176
       },
       "capabilities": {
         "pickaxe": [
@@ -71,15 +71,15 @@
       }
     },
     {
-      "key": "double/basic_pickaxe/ivory_psimetal",
+      "key": "basic_pickaxe/ivory_psimetal",
       "damage": 3.0,
       "attackSpeed": -4.6,
       "durability": 1110,
       "integrity": -4,
       "effects": {},
       "glyph": {
-        "tint": "201f1f",
-        "textureX": 32
+        "tint": "f3f7e6",
+        "textureX": 176
       },
       "capabilities": {
         "pickaxe": [
@@ -89,7 +89,7 @@
       },
       "models": [
         {
-          "tint": "201f1f",
+          "tint": "f3f7e6",
           "location": "tetra:items/module/double/head/basic_pickaxe/metal"
         }
       ],

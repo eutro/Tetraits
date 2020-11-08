@@ -35,8 +35,8 @@ public class TetrapsiSchemaProvider extends SchemaDataProvider implements ITetra
                         return b
                                 .requiredCapabilities(edb.build())
                                 .material(p.get(PREDICATE), schema.get(MATERIAL_COUNT))
-                                .moduleVariant(join(schema.get(MODULE_TYPE_KEY), p.get(NAME)))
-                                .moduleKey(schema.get(MODULE_KEY));
+                                .moduleVariant(join(schema.get(MODULE_KEY), p.get(NAME)))
+                                .moduleKey(schema.get(MODULE_TYPE_KEY));
                     })
                     .starter(p -> OutcomeBuilder.create())
                     .build(OutcomeBuilder::build);
