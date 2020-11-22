@@ -23,7 +23,7 @@
       "models": [
         {
           "tint": "d2c8f1",
-          "location": "tetra:items/module/double/head/claw/metal"
+          "location": "tetra:items/module/double/claw/psionic"
         }
       ],
       "magicCapacity": 12,
@@ -61,7 +61,7 @@
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/head/claw/metal"
+          "location": "tetra:items/module/double/claw/psionic"
         }
       ],
       "magicCapacity": 15,
@@ -99,7 +99,7 @@
       "models": [
         {
           "tint": "f3f7e6",
-          "location": "tetra:items/module/double/head/claw/metal"
+          "location": "tetra:items/module/double/claw/psionic"
         }
       ],
       "magicCapacity": 18,

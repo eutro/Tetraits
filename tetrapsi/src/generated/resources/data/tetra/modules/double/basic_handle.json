@@ -14,7 +14,7 @@
       "models": [
         {
           "tint": "d2c8f1",
-          "location": "tetra:items/module/double/handle/basic/default"
+          "location": "tetra:items/module/double/basic_handle/psionic"
         }
       ],
       "magicCapacity": 12,
@@ -43,7 +43,7 @@
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/handle/basic/default"
+          "location": "tetra:items/module/double/basic_handle/psionic"
         }
       ],
       "magicCapacity": 15,
@@ -72,7 +72,7 @@
       "models": [
         {
           "tint": "f3f7e6",
-          "location": "tetra:items/module/double/handle/basic/default"
+          "location": "tetra:items/module/double/basic_handle/psionic"
         }
       ],
       "magicCapacity": 18,

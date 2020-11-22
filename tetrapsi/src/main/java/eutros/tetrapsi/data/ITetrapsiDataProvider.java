@@ -3,6 +3,7 @@ package eutros.tetrapsi.data;
 import eutros.tetraits.data.gen.template.Pattern;
 import eutros.tetraits.data.gen.template.Pattern.IKey;
 import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.data.IDataProvider;
 import net.minecraft.util.ResourceLocation;
 import se.mickelus.tetra.capabilities.Capability;
 import se.mickelus.tetra.module.ItemEffect;
@@ -15,7 +16,7 @@ import java.util.StringJoiner;
 import static se.mickelus.tetra.capabilities.Capability.*;
 import static se.mickelus.tetra.module.ItemEffect.*;
 
-public interface ITetrapsiDataProvider {
+public interface ITetrapsiDataProvider extends IDataProvider {
 
     static String join(CharSequence... strings) {
         StringJoiner sj = new StringJoiner("/");
@@ -31,6 +32,10 @@ public interface ITetrapsiDataProvider {
 
     static ResourceLocation psi(String path) {
         return new ResourceLocation("psi", path);
+    }
+
+    static ResourceLocation tetrapsi(String path) {
+        return new ResourceLocation("tetrapsi", path);
     }
 
     IKey<String> NAME = IKey.of(String.class, "NAME");

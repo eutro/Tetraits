@@ -49,7 +49,9 @@ public class TetrapsiModuleProvider extends ModuleDataProvider implements ITetra
                         }
                         return b.key(join(module.get(MODULE_KEY), p.get(NAME)))
                                 .glyph(p.get(TINT), module.get(GLYPH_X), module.get(GLYPH_Y))
-                                .model(new ModuleModel("item", module.get(MODEL), p.get(TINT)))
+                                .model(new ModuleModel("item",
+                                        tetra(join("items/module", module.get(MODULE_TYPE_KEY), "psionic")),
+                                        p.get(TINT)))
                                 .integrity(Math.round(p.get(TOOL_HARVEST_LEVEL) * module.get(INTEGRITY_MULTIPLIER)))
                                 .trait(PSI_EQIPMENT, true)
                                 .trait(PSI_REGEN, true)

@@ -1,8 +1,9 @@
 package eutros.tetraits.data.gen.template;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
-public class Pattern {
+public class Pattern extends AbstractMap<Pattern.IKey<?>, Object> {
 
     private Map<IKey<?>, Object> properties;
 
@@ -77,6 +78,17 @@ public class Pattern {
             return (IKey<T>) of(valClass, name);
         }
 
+    }
+
+    @Nonnull
+    @Override
+    public Set<Entry<IKey<?>, Object>> entrySet() {
+        return properties.entrySet();
+    }
+
+    @Override
+    public Object get(Object key) {
+        return get((IKey<?>) key);
     }
 
 }

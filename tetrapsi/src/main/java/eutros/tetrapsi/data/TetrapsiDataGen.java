@@ -9,7 +9,10 @@ public class TetrapsiDataGen {
         DataGenerator gen = evt.getGenerator();
         gen.addProvider(new TetrapsiModuleProvider(gen));
         gen.addProvider(new TetrapsiSchemaProvider(gen));
-        if (evt.includeClient()) TetrapsiLanguageProvider.addAll(gen);
+        if (evt.includeClient()) {
+            TetrapsiLanguageProvider.addAll(gen);
+            gen.addProvider(new TetrapsiTextureProvider(gen));
+        }
     }
 
 }

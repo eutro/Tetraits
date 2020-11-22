@@ -12,11 +12,11 @@
         "textureX": 32
       },
       "capabilities": {
-        "axe": [
+        "shovel": [
           3,
           5.46
         ],
-        "shovel": [
+        "axe": [
           3,
           5.46
         ]
@@ -24,7 +24,7 @@
       "models": [
         {
           "tint": "d2c8f1",
-          "location": "tetra:items/module/double/head/adze/metal"
+          "location": "tetra:items/module/double/adze/psionic"
         }
       ],
       "magicCapacity": 12,
@@ -51,11 +51,11 @@
         "textureX": 32
       },
       "capabilities": {
-        "axe": [
+        "shovel": [
           4,
           5.81
         ],
-        "shovel": [
+        "axe": [
           4,
           5.81
         ]
@@ -63,7 +63,7 @@
       "models": [
         {
           "tint": "201f1f",
-          "location": "tetra:items/module/double/head/adze/metal"
+          "location": "tetra:items/module/double/adze/psionic"
         }
       ],
       "magicCapacity": 15,
@@ -90,11 +90,11 @@
         "textureX": 32
       },
       "capabilities": {
-        "axe": [
+        "shovel": [
           4,
           6.16
         ],
-        "shovel": [
+        "axe": [
           4,
           6.16
         ]
@@ -102,7 +102,7 @@
       "models": [
         {
           "tint": "f3f7e6",
-          "location": "tetra:items/module/double/head/adze/metal"
+          "location": "tetra:items/module/double/adze/psionic"
         }
       ],
       "magicCapacity": 18,
